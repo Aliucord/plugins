@@ -4,13 +4,15 @@ This is the repo that stores all officially published and verified aliucord plug
 
 The specification for everything about this repository (detailed file explanations, review process, etc) can be found in the [spec folder](spec).
 
+All actual plugin data is stored on the `data` branch, so it can be safely pruned if it ever gets too large.
+
 ## Legacy plugins
 
-Legacy plugin data is stored in the [legacy](legacy) folder. This is not done yet, as modern is more of a priority.
+Legacy plugin data is stored in the `legacy` folder. This is not done yet, as modern is more of a priority.
 
 ## Modern plugins
 
-Modern plugin data is stored in the [modern](modern) folder.
+Modern plugin data is stored in the `modern` folder.
 
 ## Licensing
 
