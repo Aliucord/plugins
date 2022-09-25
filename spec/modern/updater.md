@@ -4,41 +4,51 @@ This is a very simple file, used only by the aliucord updater, to quickly check 
 
 ## General format
 ```json
-[
-    {
-        "name": "plugin name here",
-        "version": "semver-compatible version here",
-        "oldNames": ["old name of this plugin here"]
+{
+    "plugin name here name": {
+        "version": "semver-compatible version here"
+    },
+    "old plugin name here": {
+        "newName": "new plugin name here"
     }
-]
+}
 ```
 
 ## Properties
 
 ### name
 
-The name of this plugin. This must be unique, and is pretty self-explanatory.
+The name of this plugin. This must be unique, and is pretty self-explanatory. This is used as the key for ONE OF the below properties. Look at the example below for a better explanation. When trying to find if an installed plugin is outdated, you should simply index this object with the name of the plugin.
 
-### version
+### version (optional)
 
-The current version of this plugin. This MUST be semver compatible, and is compared to any installed versions of this plugin on the user's device.
+The current version of this plugin. This MUST be semver compatible, and is compared to any installed versions of this plugin on the user's device. This property will be present only when the plugin name in the key is not an outdated name. For example, if "Translator" is an old name of "MessageTranslate", then 
+```js
+updaterJson["MessageTranslate"].version // "3.2.3"
+// BUT when an old name is used:
+updaterJson["Translator"].version // undefined
+```
 
-### oldNames
+### newName (optional)
 
-This is an array of any old names that this plugin may have. This is added to allow a plugin to be renamed if necessary. If the updater finds an installed plugin in this array, it will handle that appropriately and use the new name of the plugin.
+This property, if present, means that this plugin has a new name and should be renamed appropriately. When present, the updater should use this to find the version by looking up the updated name, and handle that appropriately. This is the opposite of `version`, and will only be present if an old name is used. For example, if "Translator" is an old name of "MessageTranslate", then 
+```js
+updaterJson["MessageTranslate"].newName // undefined
+// BUT when an old name is used:
+updaterJson["Translator"].version // "MessageTranslate"
+```
 
 ## Example
 ```json
-[
-    {
-        "name": "MessageTranslate",
-        "version": "0.4.2",
-        "oldNames": ["Translator"]
+{
+    "MessageTranslate": {
+        "version": "3.2.3"
     },
-    { 
-        "name": "AccountSwitcher",
-        "version": "3.6.2",
-        "oldNames": []
+    "Translator": {
+        "newName": "MessageTranslate"
+    },
+    "AccountSwitcher": {
+        "version": "0.3.6"
     }
-]
+}
 ```
