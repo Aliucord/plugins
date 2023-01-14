@@ -1,18 +1,13 @@
 # Aliucord plugin repo
 
-This is the repo that stores all officially published and verified aliucord plugins, for both the legacy (java/kotlin) discord app, and the modern (react native) discord app.
+## Builds
+Built and deployed plugins can be viewed on the [data branch](https://github.com/Aliucord/plugins/tree/data).
 
-The specification for everything about this repository (detailed file explanations, review process, etc) can be found in the [spec folder](spec).
+This is the repository that stores all officially published and verified Aliucord plugins, for both the legacy (Java/Kotlin) Discord app, and the modern (React Native) Discord app.
+
+The specification for everything about this repository and the internals of publishing plugins can be (detailed explanations) can be found in the [spec](spec) folder.
 
 All actual plugin data is stored on the `data` branch, so it can be safely pruned if it ever gets too large.
-
-## Legacy plugins
-
-Legacy plugin data is stored in the `legacy` folder. This is not done yet, as modern is more of a priority.
-
-## Modern plugins
-
-Modern plugin data is stored in the `modern` folder.
 
 ## Licensing
 
