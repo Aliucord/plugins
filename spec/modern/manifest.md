@@ -4,7 +4,7 @@ While this file can differ slightly from plugin to plugin, it MUST have the requ
 
 - `name` -> A name, ONLY matching `[a-zA-Z]`
 - `description` -> A **short** description
-- `version` -> A SemVer version
+- `version` -> A [SemVer](https://semver.org/) version
 - `authors` -> (optional) An array of `{ id?: "optional string id", name: "string name" }`
 - `license` -> (optional) An SPDX license identifier
 - `url` -> (NOT ALLOWED) Update url for 3rd party plugins
