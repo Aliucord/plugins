@@ -20,7 +20,7 @@ This is a very simple file, used only by the aliucord updater, to quickly check 
 
 The name of this plugin. This must be unique, and is pretty self-explanatory. This is used as the key for ONE OF the below properties. Look at the example below for a better explanation. When trying to find if an installed plugin is outdated, you should simply index this object with the name of the plugin.
 
-### version (optional if no newName)
+### version (optional, if no newName)
 
 The current version of this plugin. This MUST be semver compatible, and is compared to any installed versions of this plugin on the user's device. This property will be present only when the plugin name in the key is not an outdated name. For example, if "Translator" is an old name of "MessageTranslate", then 
 ```js
