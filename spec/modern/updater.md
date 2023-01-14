@@ -29,7 +29,7 @@ updaterJson["MessageTranslate"].version // "3.2.3"
 updaterJson["Translator"].version // undefined
 ```
 
-### newName (optional if no version)
+### newName (optional, if no version)
 
 This property, if present, means that this plugin has a new name and should be renamed appropriately. When present, the updater should use this to find the version by looking up the updated name, and handle that appropriately. This is the opposite of `version`, and will only be present if an old name is used. For example, if "Translator" is an old name of "MessageTranslate", then 
 ```js
