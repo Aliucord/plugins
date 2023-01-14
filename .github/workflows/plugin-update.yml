@@ -111,7 +111,7 @@ jobs:
             mkdir -p $pluginName
 
             # owner validation
-            if [ -f ./$pluginName/repository ] && [ "$(readlink -f ./$pluginName/repository)" != "${{ github.event.inputs.repo_id }}" ]; then
+            if [ -f ./$pluginName/repository ] && [ "$(readlink -f ./$pluginName/repository | basename)" != "${{ github.event.inputs.repo_id }}" ]; then
               echo "Failed validation! This repository does not own the plugin $pluginName"
               exit 1
             fi
