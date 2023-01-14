@@ -59,13 +59,6 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 1
     steps:
-      - name: Checkout plugin repo
-        uses: actions/checkout@v3
-        with:
-          repository: Aliucord/plugins
-          path: plugins
-          ref: data
-
       - name: Download plugins
         uses: actions/download-artifact@v3
         with:
@@ -83,25 +76,31 @@ jobs:
         id: test_existing
         run: |
           branch_name="update/${{ github.event.inputs.repo_id }}"
-          if git ls-remote --exit-code $branch_name"; then
+          if git ls-remote --exit-code https://github.com/Aliucord/plugins.git $branch_name"; then
             echo "base_branch=$branch_name" >> $GITHUB_OUTPUT
           else
             echo "base_branch=data"  >> $GITHUB_OUTPUT
           fi
+
+      - name: Checkout plugin repo
+        uses: actions/checkout@v3
+        with:
+          repository: Aliucord/plugins
+          path: plugins
+          ref: ${{ steps.test_existing.outputs.base_branch }}
 
       - name: Download target plugin repository
         uses: actions/checkout@v3
         with:
           repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
           path: plugins/repositories/${{ github.event.inputs.repo_id }}
-          ref: ${{ steps.test_existing.outputs.base_branch }} # FIXME: this is supposed to be on the plugins repo
 
       - name: Update plugins in repo
         run: |
           cd plugins/modern
           
           # Make new branch
-          if [ "${{ steps.test_existing.outputs.base_branch }}" != "data" ]; then
+          if [ "${{ steps.test_existing.outputs.base_branch }}" == "data" ]; then
             git checkout -b ${{ steps.test_existing.outputs.base_branch }}
           fi
           src_commit=`cd plugins/repositories/${{ github.event.inputs.repo_id }} && git rev-parse HEAD`
@@ -111,10 +110,11 @@ jobs:
             pluginName=`basename ${plugin::-4}`
             mkdir -p $pluginName
 
-            # .owner validation
-            ownerFile=./$pluginName/.owner
-            if [ -f $ownerFile ]  && [ "$(<$ownerFile)" != "${{ github.event.inputs.repo_id }}" ]; then echo "Failed validation! This repository does not own the plugin $pluginName"; exit 1; fi
-            echo ${{ github.event.inputs.repo_id }} > $ownerFile
+            # owner validation
+            if [ -f ./$pluginName/repository ] && [ "$(readlink -f ./$pluginName/repository)" != "${{ github.event.inputs.repo_id }}" ]; then
+              echo "Failed validation! This repository does not own the plugin $pluginName"
+              exit 1
+            fi
 
             # .zip
             mv $pluginPath ./$pluginName

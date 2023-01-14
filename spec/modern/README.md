@@ -26,9 +26,8 @@ There are 5 different important items in this plugin repo as a whole:
 - [`{plugin}/metadata.json`](metadata.md): A file containing build-specific update data, like hash and commit.
 - [`{plugin}/manifest.json`](manifest.md): The copied manifest output file from the built plugin.
 - `{plugin}/LICENSE`: The license file that the plugin is released under in its own repository
-- `{plugin}/repository`: A symlink to the repository that is copied into this repository. [More below](#copied-source-repositories)
+- `{plugin}/repository`: A symlink to the repository that is copied into this repository. This also determines the owner of this plugin. Other repositories will not be able to deploy plugins with names that are owned by another repository. [More below](#copied-source-repositories)
 - `{plugin}/{plugin}.zip`: The built plugin that is downloaded on install or update.
-- `{plugin}/.owner`: A file of just the repository id as a string that currently owns this plugin. This is so that people cannot snipe ownership of plugins. If this is violated, the build will fail. To transfer ownership of a plugin, just change this file.
 
 For reviewers, you can read [reviewing.md](reviewing.md) to get a basic idea of what should be done before approving a PR.
 For plugin devs, you can read [contributing.md](contributing.md) to learn how to upload your plugins to this repo.
