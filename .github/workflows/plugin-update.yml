@@ -18,7 +18,7 @@ on:
 
 jobs:
   build:
-    name: Build plugins
+    name: Build target repository
     runs-on: ubuntu-20.04
     timeout-minutes: 4
     steps:
@@ -83,7 +83,7 @@ jobs:
         id: test_existing
         run: |
           branch_name="update/${{ github.event.inputs.repo_id }}"
-          if git ls-remote --exit-code faraway; then
+          if git ls-remote --exit-code $branch_name"; then
             echo "base_branch=$branch_name" >> $GITHUB_OUTPUT
           else
             echo "base_branch=data"  >> $GITHUB_OUTPUT
@@ -94,7 +94,7 @@ jobs:
         with:
           repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
           path: plugins/repositories/${{ github.event.inputs.repo_id }}
-          ref: ${{ steps.test_existing.outputs.base_branch }}
+          ref: ${{ steps.test_existing.outputs.base_branch }} # FIXME: this is supposed to be on the plugins repo
 
       - name: Update plugins in repo
         run: |
