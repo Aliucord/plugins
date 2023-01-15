@@ -52,6 +52,10 @@ jobs:
           CI: "true"
         run: |
           # Read distFolder from .aliucord.json to step output
+          if [ ! -f .aliucord.json ]; then
+            echo "No .aliucord.json config present!"
+            exit 1
+          fi
           echo "dist_folder=$(jq -r '.distFolder' < .aliucord.json)" >> $GITHUB_OUTPUT
 
           # Run the buildCommand from .aliucord.json
@@ -64,8 +68,9 @@ jobs:
           # Upload manifests, plugin zips, and .aliucord.json
           path: ${{ steps.build.outputs.dist_folder }}/*.{zip,json} .aliucord.json
 
-  make_pr:
+  update:
     name: Make/Update PR
+    needs: build
     runs-on: ubuntu-20.04
     timeout-minutes: 1
     steps:
