@@ -27,8 +27,14 @@ jobs:
         with:
           repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
+      - name: Setup Node 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Setup corepack
+        run: |
+          corepack enable
 
       # aliuhook
       # - name: Setup JDK 11
@@ -45,14 +51,18 @@ jobs:
         env:
           CI: "true"
         run: |
-          echo "dist_folder=$(jq -r '.distFolder' < .aliucordrc)" >> $GITHUB_OUTPUT
-          jq -r '.buildAllCommand' < .aliucordrc | sh
+          # Read distFolder from .aliucord.json to step output
+          echo "dist_folder=$(jq -r '.distFolder' < .aliucord.json)" >> $GITHUB_OUTPUT
+
+          # Run the buildCommand from .aliucord.json
+          jq -r '.buildCommand' < .aliucord.json | sh
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
         with:
           name: INSECURE-DO-NOT-USE
-          path: ${{ steps.build.outputs.dist_folder }}/*.{zip,json} .aliucordrc
+          # Upload manifests, plugin zips, and .aliucord.json
+          path: ${{ steps.build.outputs.dist_folder }}/*.{zip,json} .aliucord.json
 
   make_pr:
     name: Make/Update PR
@@ -69,14 +79,17 @@ jobs:
         run: |
           unzip build.zip -d build
           cd build
-          rm `jq -r '.ignoredPlugins | map("'\''\(.)'.zip\''") | join(" ")' < .aliucordrc`
-          rm .aliucordrc
+          # Delete the ignoredPlugins as marked in .aliucord.json
+          rm `jq -r '.ignoredPlugins | map("'\''\(.)'.zip\''") | join(" ")' < .aliucord.json`
 
       - name: Test for existing PR
         id: test_existing
         run: |
+          # Target branch name is update/<repo id>, set as step output
           branch_name="update/${{ github.event.inputs.repo_id }}"
           echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+
+          # Check if target branch already exists, set base branch to checkout
           if git ls-remote --exit-code https://github.com/Aliucord/plugins.git $branch_name"; then
             echo "base_branch=$branch_name" >> $GITHUB_OUTPUT
           else
@@ -99,11 +112,13 @@ jobs:
       - name: Update plugins in repo
         run: |
           cd plugins/modern
-          
-          # Make new branch
+
+          # Make new branch if not already on it
           if [ "${{ steps.test_existing.outputs.base_branch }}" == "data" ]; then
             git checkout -b ${{ steps.test_existing.outputs.branch_name }}
           fi
+
+          # Get HEAD commit on target plugin repository
           src_commit=`cd plugins/repositories/${{ github.event.inputs.repo_id }} && git rev-parse HEAD`
 
           # Copy plugin stuff into plugin dir
@@ -112,29 +127,33 @@ jobs:
             mkdir -p $pluginName
 
             # owner validation
+            # if symlink exists, check if the last section of target path matches repo id
             if [ -f ./$pluginName/repository ] && [ "$(readlink -f ./$pluginName/repository | basename)" != "${{ github.event.inputs.repo_id }}" ]; then
               echo "Failed validation! This repository does not own the plugin $pluginName"
               exit 1
             fi
 
-            # .zip
+            # copy plugin .zip
             mv $pluginPath ./$pluginName
 
-            # manifest.json
+            # copy manifest.json
             mv -T `dirname $pluginPath`/$pluginName-manifest.json ./$pluginName/manifest.json
 
-            # metadata.json
+            # make metadata.json
+            # get version & changelog from manifest, hash & commit supplied as arg
             hash=`echo -n $pluginPath | sha256sum`
             cat ./$pluginName/manifest.json | jq -c --arg hash $hash --arg commit $src_commit '{hash: $hash, changelog: .changelog, commit: $commit, version: .version}' > ./$pluginName/metadata.json
 
-            # symlink
+            # make repo symlink
             ln -s ../repositories/${{ github.event.inputs.repo_id }} ./$pluginName/repository
           done
 
-          # updater.json
+          # make updater.json
+          # This supplies the existing updater.json and all of the manifests, and overrides the existing with new
           cat updater.json **/manifest.json | jq -cs '.[0] + (.[1:] | reduce .[] as $manifest ({}; . + {($manifest.name): {version: $manifest.version}}))' > updater.json
 
-          # full.json
+          # make full.json
+          # Supplies all manifests, combines into single array and checks for duplicates
           cat **/manifest.json | jq -cs 'if group_by(.name) | any(length>1) then "Duplicate manifest name key\n" | halt_error(1) else . end' > full.json
 
           # Remove .git from copied repo
@@ -158,4 +177,4 @@ jobs:
           title: "chore: update ${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
           body: "Author: @${{ github.event.inputs.repo_owner }}"
           delete-branch: true
-          author: ${{ github.event.inputs.repo_owner }} <${{ github.actor }}@users.noreply.github.com>
+          author: ${{ github.event.inputs.repo_owner }} <${{ github.event.inputs.repo_owner }}@users.noreply.github.com>

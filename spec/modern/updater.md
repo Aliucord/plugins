@@ -5,11 +5,14 @@ This is a very simple file, used only by the aliucord updater, to quickly check 
 ## General format
 ```json
 {
-    "plugin_name_here_name": {
-        "version": "semver-compatible version here"
+    "MessageTranslate": {
+        "version": "3.2.3"
     },
-    "old_plugin_name_here": {
-        "newName": "plugin_name_here_name"
+    "Translator": {
+        "newName": "MessageTranslate"
+    },
+    "AccountSwitcher": {
+        "version": "0.3.6"
     }
 }
 ```
@@ -36,19 +39,4 @@ This property, if present, means that this plugin has a new name and should be r
 updaterJson["MessageTranslate"].newName // undefined
 // BUT when an old name is used:
 updaterJson["Translator"].version // "MessageTranslate"
-```
-
-## Example
-```json
-{
-    "MessageTranslate": {
-        "version": "3.2.3"
-    },
-    "Translator": {
-        "newName": "MessageTranslate"
-    },
-    "AccountSwitcher": {
-        "version": "0.3.6"
-    }
-}
 ```

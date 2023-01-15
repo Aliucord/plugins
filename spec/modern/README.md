@@ -2,18 +2,18 @@
 
 ## Source plugin repositories
 
-There is 1 important file that is used for building that plugin's repository, `.aliucordrc`, which is a json file that configures the deployment build.
+There is 1 important file that is used for building that plugin's repository, `.aliucord.json`, which configures how that repository should be built.
 
-### .aliucordrc format:
+### .aliucord.json format:
 ```json
 {
-    "buildAllCommand": "pnpm i --frozen-lockfile && pnpm buildAll",
+    "buildCommand": "pnpm i --frozen-lockfile && pnpm buildAll",
     "distFolder": "./dist",
     "ignoredPlugins": ["PluginName1", "PluginName2"]
 }
 ```
 
-- `buildAllCommand` -> A shell command that builds every single plugin
+- `buildCommand` -> A shell command that builds all of the plugins in this repo
 - `distFolder` -> A relative path from repo root to the target dist folder you will build plugins to
 - `ignoredPlugins` -> Array of plugin names to ignore when deploying. Considering that 2 plugins cannot have the same name, it is vital to stop any personal "forked" plugins from deploying.
 

@@ -10,11 +10,10 @@ Because of the way building is done, multiple plugins can be either updated or a
 Each PR must be created by the Aliucord Bot, from some branch to the `data` branch. If the PR does not match that description, leave it alone.
 
 - Check that each new `manifest.json` that it matches the required parts of the specification [here](./manifest.md)
-  - Note that version bumps are not required! This indicates that the author is pushing out an unimportant change that does not need redownlading.
 - There should be changes under `/repositories/<id>`, this is the source repository the plugin was built from. Look over ***every single file*** to make sure nothing malicious has been added, this includes:
   - ALL of the plugin source code
   - `package.json` Make absolute sure that the dependencies are official, and check that the scripts don't do anything strange. (lockfile can be ignored)
-  - `.aliucordrc` Check the `buildAllPlugins` command, this should have `pnpm i --frozen-lockfile` included or the equivalent method for ignoring the lockfile.
+  - `.aliucord.json` Check the `buildAllPlugins` command, this should have `pnpm i --frozen-lockfile` included or the equivalent method for ignoring the lockfile.
   - Rollup config files in the root dir
   - And a quick glance over everything else
 
