@@ -65,9 +65,9 @@ jobs:
           jq -r '.buildCommand' < aliucord.json | sh
 
           # Make upload artifacts' paths
-          artifactPaths="./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}"
+          artifactPaths=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
 
-          # Expand full paths
+          # Expand to full paths
           echo "artifacts=$(realpath $artifactPaths)" >> $GITHUB_OUTPUT
 
       - name: Upload plugins
