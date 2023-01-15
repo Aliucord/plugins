@@ -2,8 +2,6 @@
 
 A few main people are allowed to review pull requests to this repository (which is how new plugins and plugin updates are submitted). Others can review, but their review will not affect the automated process.
 
-**NOTE:** This process is for RN plugins only, as the Kt plugin store has not been made yet.
-
 ## Process
 
 Because of the way building is done, multiple plugins can be either updated or added in one commit. However, you only need to check the source once, as it is shared between plugins (per repository).\
