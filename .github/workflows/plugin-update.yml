@@ -66,8 +66,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: INSECURE-DO-NOT-USE
-          # Upload manifests, plugin zips, and aliucord.json
-          path: ${{ steps.build.outputs.dist_folder }}/*.{zip,json} aliucord.json
+          retention-days: 3
+          if-no-files-found: error
+          path: ${{ github.workspace }}/aliucord.json ${{ github.workspace }}/${{ steps.build.outputs.dist_folder }}/*.{zip,json}
 
   update:
     name: Make/Update PR
