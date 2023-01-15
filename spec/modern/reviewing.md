@@ -11,7 +11,7 @@ Each PR must be created by the Aliucord Bot, from some branch to the `data` bran
 - There should be changes under `/repositories/<id>`, this is the source repository the plugin was built from. Look over ***every single file*** to make sure nothing malicious has been added, this includes:
   - ALL of the plugin source code
   - `package.json` Make absolute sure that the dependencies are official, and check that the scripts don't do anything strange. (lockfile can be ignored)
-  - `.aliucord.json` Check the `buildAllPlugins` command, this should have `pnpm i --frozen-lockfile` included or the equivalent method for ignoring the lockfile.
+  - `aliucord.json` Check the `buildAllPlugins` command, this should have `pnpm i --frozen-lockfile` included or the equivalent method for ignoring the lockfile.
   - Rollup config files in the root dir
   - And a quick glance over everything else
 

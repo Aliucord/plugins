@@ -2,9 +2,9 @@
 
 ## Source plugin repositories
 
-There is 1 important file that is used for building that plugin's repository, `.aliucord.json`, which configures how that repository should be built.
+There is 1 important file that is used for building that plugin's repository, `aliucord.json`, which configures how that repository should be built.
 
-### .aliucord.json format:
+### aliucord.json format:
 ```json
 {
     "buildCommand": "pnpm i --frozen-lockfile && pnpm buildAll",
