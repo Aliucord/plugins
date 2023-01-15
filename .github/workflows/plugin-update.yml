@@ -57,14 +57,18 @@ jobs:
             echo "No aliucord.json config present!"
             exit 1
           fi
-          env
+
+          # Read dist folder from aliucord.json
+          echo "dist_folder=$(jq -r '.distFolder' < aliucord.json)" >> $GITHUB_OUTPUT
 
           # Run the buildCommand from aliucord.json
           jq -r '.buildCommand' < aliucord.json | sh
-          
-          # Expand globs with variable expansion
+
+          # Make upload artifacts' paths
           artifactPaths="./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}"
-          echo "artifacts=$artifactPaths" >> $GITHUB_OUTPUT
+
+          # Expand full paths
+          echo "artifacts=$(realpath $artifactPaths)" >> $GITHUB_OUTPUT
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3

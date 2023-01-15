@@ -6,6 +6,9 @@
 unzip build.zip -d build
 cd build
 
+# Delete any symlinks for safety
+find . -type l -delete
+
 # shellcheck disable=SC2046
 # SC2046 word splitting intentional
 # Delete the ignoredPlugins as marked in aliucord.json
