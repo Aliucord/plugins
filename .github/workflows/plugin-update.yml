@@ -66,9 +66,14 @@ jobs:
 
           # Make upload artifacts' paths
           artifactPaths=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
+          artifactPaths=`realpath --no-symlinks $artifactPaths`
 
-          # Expand to full paths
-          echo "artifacts=$(realpath --no-symlinks $artifactPaths | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          # https://github.com/orgs/community/discussions/26288#discussioncomment-3251220
+          artifactPaths="${artifactPaths//'%'/'%25'}"
+          artifactPaths="${artifactPaths//$'\n'/'%0A'}"
+          artifactPaths="${artifactPaths//$'\r'/'%0D'}"
+
+          echo "artifacts=$artifactPaths" >> $GITHUB_OUTPUT
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
