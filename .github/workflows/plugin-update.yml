@@ -52,15 +52,19 @@ jobs:
         env:
           CI: "true"
         run: |
-          # Read distFolder from aliucord.json to step output
+          # Check if aliucord.json config exists
           if [ ! -f aliucord.json ]; then
             echo "No aliucord.json config present!"
             exit 1
           fi
-          echo "dist_folder=$(jq -r '.distFolder' < aliucord.json)" >> $GITHUB_OUTPUT
+          env
 
           # Run the buildCommand from aliucord.json
           jq -r '.buildCommand' < aliucord.json | sh
+          
+          # Expand globs with variable expansion
+          artifactPaths="./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}"
+          echo "artifacts=$artifactPaths" >> $GITHUB_OUTPUT
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
@@ -68,7 +72,7 @@ jobs:
           name: INSECURE-DO-NOT-USE
           retention-days: 3
           if-no-files-found: error
-          path: ${{ github.workspace }}/aliucord.json ${{ github.workspace }}/${{ steps.build.outputs.dist_folder }}/*.{zip,json}
+          path: ${{ steps.build.outputs.artifacts }}
 
   update:
     name: Make/Update PR
