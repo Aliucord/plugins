@@ -20,7 +20,7 @@ jobs:
   build:
     name: Build target repository
     runs-on: ubuntu-20.04
-    timeout-minutes: 4
+    timeout-minutes: 2
     steps:
       - name: Checkout target plugin repository
         uses: actions/checkout@v3
@@ -82,11 +82,7 @@ jobs:
           artifacts="${artifacts//$'\r'/'%0D'}"
           echo "::set-output name=artifacts::$artifacts"
           
-          # test gkjhfsf
-          cat .git/config
-          cd code
-          echo "token: $GITHUB_TOKEN"
-          git branch -b guh
+          git checkout -b guh
           git push -u origin guh
 
       - name: Upload plugins
