@@ -59,6 +59,7 @@ cat ./**/manifest.json | \
 
 # Commit
 cd "$GITHUB_WORKSPACE/plugins"
+git checkout -b "$BRANCH_NAME"
 git config --local user.email "actions@github.com"
 git config --local user.name "GitHub Actions"
 git add .
