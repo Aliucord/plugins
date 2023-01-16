@@ -2,7 +2,7 @@
 
 # shellcheck disable=2164
 # SC2164 cd fail
-
+pwd
 unzip build.zip -d build
 cd build
 
