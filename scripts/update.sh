@@ -12,48 +12,47 @@ rm -rf "../repositories/$REPO_ID/.git"
 
 # Copy plugin stuff into plugin dir
 for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
-    dirPath="$(dirname "$pluginPath")"
     pluginName="$(basename "${pluginPath::-4}")"
     hash="$(sha256sum "$pluginPath" | cut -d ' ' -f 1)"
-    symlinkPath="./$pluginName/repository"
 
     mkdir -p "$pluginName"
+    cd "$pluginName"
 
     # owner validation
     # if symlink exists, check if the last section of target path matches repo id
-    if [ -f "$symlinkPath" ] && [ "$(readlink -f "$symlinkPath" | xargs basename)" != "$REPO_ID" ]; then
+    if [ -f ./repository ] && [ "$(readlink -f ./repository | xargs basename)" != "$REPO_ID" ]; then
         echo "Failed validation! This repository does not own the plugin $pluginName"
         exit 1
     else
         # make repo symlink
-        ln -s "../repositories/$REPO_ID" "$symlinkPath"
+        ln -s "../../repositories/$REPO_ID" ./repository
     fi
 
     # copy over plugin .zip
-    mv "$pluginPath" "./$pluginName"
+    mv "$pluginPath" .
 
     # copy over manifest.json
-    mv -T "$dirPath/$pluginName-manifest.json" "./$pluginName/manifest.json"
+    mv -T "$(dirname "$pluginPath")/$pluginName-manifest.json" ./manifest.json
 
     # make metadata.json
     # construct metadata.json from version & changelog manifest, hash & commit supplied as arg
     jq -c --arg hash "$hash" --arg commit "$srcCommit" \
       '{hash: $hash, changelog: .changelog, commit: $commit, version: .version}' \
-      < "./$pluginName/manifest.json" \
-      > "./$pluginName/metadata.json"
+      < ./manifest.json \
+      > ./metadata.json
 done
 
 # make updater.json
 # This supplies the existing updater.json and all of the manifests, and overrides the existing with new
 newUpdater="$(cat updater.json ./**/manifest.json | \
   jq -cs '.[0] + (.[1:] | reduce .[] as $manifest ({}; . + {($manifest.name): {version: $manifest.version}}))')"
-echo "$newUpdater" >updater.json
+echo "$newUpdater" > updater.json
 
 # make full.json
 # Supplies all manifests, combines into single array and checks for duplicates
 cat ./**/manifest.json | \
   jq -cs 'if group_by(.name) | any(length>1) then "Duplicate manifest name key\n" | halt_error(1) else . end' \
-  >full.json
+  > full.json
 
 # Commit
 cd "$GITHUB_WORKSPACE/plugins"
