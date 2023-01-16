@@ -98,7 +98,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: INSECURE-DO-NOT-USE
-          path: build.zip
 
       - name: Extract plugins
         run: source code/scripts/extract.sh

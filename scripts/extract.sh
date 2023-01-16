@@ -3,8 +3,11 @@
 # shellcheck disable=2164
 # SC2164 cd fail
 
-# Delete any symlinks for safety
+ls -R
+unzip INSECURE-DO-NOT-USE -d build
 cd build
+
+# Delete any symlinks for safety
 find . -type l -delete
 
 # shellcheck disable=SC2046
