@@ -137,7 +137,6 @@ jobs:
         run: source code/scripts/update.sh
 
       - name: Commit to existing branch
-        if: ${{ steps.test_existing.outputs.base_branch != 'data' }}
         run: |
           # Commit
           cd "$GITHUB_WORKSPACE/plugins"
