@@ -21,12 +21,15 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
 
     # owner validation
     # if symlink exists, check if the last section of target path matches repo id
-    if [ -f ./repository ] && [ "$(readlink -f ./repository | xargs basename)" != "$REPO_ID" ]; then
+    if [ -L ./repository ] && [ "$(readlink -f ./repository | xargs basename)" != "$REPO_ID" ]; then
         echo "Failed validation! This repository does not own the plugin $pluginName"
         exit 1
-    elif [ ! -f ./repository ]; then
+    elif [ ! -L ./repository ]; then
         # make repo symlink
         ln -s "../../repositories/$REPO_ID" ./repository
+    elif [ -f ./repository ]; then
+      echo "Repository symlink is a regular file"
+      exit 1
     fi
 
     # copy over plugin .zip
