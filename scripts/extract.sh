@@ -3,9 +3,8 @@
 # shellcheck disable=2164
 # SC2164 cd fail
 
-ls -R
-unzip INSECURE-DO-NOT-USE -d build
 cd build
+mv dist/* .
 
 # Delete any symlinks for safety
 find . -type l -delete
