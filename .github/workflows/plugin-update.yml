@@ -66,11 +66,14 @@ jobs:
 
           # Make upload artifacts' paths
           artifacts=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
-          artifacts=`realpath --no-symlinks artifacts` # full path expansion
-          # https://github.com/orgs/community/discussions/26288#discussioncomment-3251220
+          artifacts=`realpath --no-symlinks $artifacts` # full path expansion
+
+          # my burning hatred for github step outputs
+          # actions/upload-artifact only accepts multiline values but step outputs are so shit you have to do this
           artifacts="${artifacts//'%'/'%25'}" 
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
+
           echo "::set-output name=artifacts::$artifacts"
 
       - name: Upload plugins
