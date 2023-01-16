@@ -24,7 +24,7 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
     if [ -f ./repository ] && [ "$(readlink -f ./repository | xargs basename)" != "$REPO_ID" ]; then
         echo "Failed validation! This repository does not own the plugin $pluginName"
         exit 1
-    else
+    elif [ ! -f ./repository ]; then
         # make repo symlink
         ln -s "../../repositories/$REPO_ID" ./repository
     fi
