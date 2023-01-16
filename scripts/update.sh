@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# shellcheck disable=2164,SC2193
+# shellcheck disable=2164,SC2193,SC2103
 # SC2164 cd fail
 # SC2193 never equal
+# SC2103 ( subshell ) for cd ..
 
 cd plugins/modern
 
@@ -40,6 +41,8 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
       '{hash: $hash, changelog: .changelog, commit: $commit, version: .version}' \
       < ./manifest.json \
       > ./metadata.json
+
+    cd ..
 done
 
 # make updater.json
@@ -60,5 +63,5 @@ git checkout -b "$BRANCH_NAME"
 git config --local user.email "actions@github.com"
 git config --local user.name "GitHub Actions"
 git add .
-git commit -m "build: commit $REPO_OWNER/$REPO_NAME@$srcCommit" || exit 0
+git commit -m "build: $REPO_OWNER/$REPO_NAME@$srcCommit"
 git push -u origin "$BRANCH_NAME"
