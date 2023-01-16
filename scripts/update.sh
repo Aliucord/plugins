@@ -12,7 +12,7 @@ if [ "$BASE_BRANCH" == "data" ]; then
 fi
 
 # Get HEAD commit on target plugin repository
-srcCommit="$(cd "plugins/repositories/$REPO_ID" && git rev-parse HEAD)"
+srcCommit="$(cd "../repositories/$REPO_ID" && git rev-parse HEAD)"
 
 # Copy plugin stuff into plugin dir
 for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
