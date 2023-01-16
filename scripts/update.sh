@@ -68,6 +68,7 @@ function commit() {
     git push -u origin "$BRANCH_NAME"
 }
 
+# If new branch
 if [ "$BASE_BRANCH" == "data" ]; then
   git checkout -b "$BRANCH_NAME"
   commit
