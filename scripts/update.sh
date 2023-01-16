@@ -56,3 +56,11 @@ cat updater.json ./**/manifest.json | \
 cat ./**/manifest.json | \
   jq -cs 'if group_by(.name) | any(length>1) then "Duplicate manifest name key\n" | halt_error(1) else . end' \
   >full.json
+
+# Commit
+cd "$GITHUB_WORKSPACE/plugins"
+git config --local user.email "actions@github.com"
+git config --local user.name "GitHub Actions"
+git add .
+git commit -m "build: commit $REPO_OWNER/$REPO_NAME@$srcCommit" || exit 0
+git push -u origin "$BRANCH_NAME"
