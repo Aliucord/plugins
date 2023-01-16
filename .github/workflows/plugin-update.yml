@@ -94,7 +94,7 @@ jobs:
         with:
           path: code
 
-      - name: Download plugins
+      - name: Download built plugins artifact
         uses: actions/download-artifact@v3
         with:
           name: INSECURE-DO-NOT-USE
@@ -136,16 +136,27 @@ jobs:
           BASE_BRANCH: ${{ steps.test_existing.outputs.base_branch }}
         run: source code/scripts/update.sh
 
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v4
-        if: ${{ steps.test_existing.outputs.base_branch == 'data' }}
-        with:
-          path: plugins
-          base: data
-          branch: ${{ steps.test_existing.outputs.branch_name }}
-          title: "chore: update ${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
-          body: "Author: @${{ github.event.inputs.repo_owner }}"
-          author: ${{ github.event.inputs.repo_owner }} <${{ github.event.inputs.repo_owner }}@users.noreply.github.com>
+      - name: Commit to existing branch
+        if: ${{ steps.test_existing.outputs.base_branch != 'data' }}
+        run: |
+          # Commit
+          cd "$GITHUB_WORKSPACE/plugins"
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add *
+          git commit -m "build: commit $REPO_OWNER/$REPO_NAME@$srcCommit" || exit 0
+          git push -u origin "$BRANCH_NAME"
+
+#      - name: Create PR
+#        uses: peter-evans/create-pull-request@v4
+#        if: ${{ steps.test_existing.outputs.base_branch == 'data' }}
+#        with:
+#          path: plugins
+#          base: data
+#          branch: ${{ steps.test_existing.outputs.branch_name }}
+#          title: "chore: update ${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
+#          body: "Author: @${{ github.event.inputs.repo_owner }}"
+#          author: ${{ github.event.inputs.repo_owner }} <${{ github.event.inputs.repo_owner }}@users.noreply.github.com>
 
       - name: Delete build artifact
         uses: geekyeggo/delete-artifact@dc8092f14c4245ef6a3501b1669b171c12899167
