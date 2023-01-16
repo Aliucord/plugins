@@ -145,7 +145,6 @@ jobs:
           branch: ${{ steps.test_existing.outputs.branch_name }}
           title: "chore: update ${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
           body: "Author: @${{ github.event.inputs.repo_owner }}"
-          delete-branch: true
           author: ${{ github.event.inputs.repo_owner }} <${{ github.event.inputs.repo_owner }}@users.noreply.github.com>
 
       - name: Delete build artifact
