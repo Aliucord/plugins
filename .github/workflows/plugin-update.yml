@@ -64,16 +64,15 @@ jobs:
           # Run the buildCommand from aliucord.json
           jq -r '.buildCommand' < aliucord.json | sh
 
-          # Make upload artifacts' paths
+          # Get upload artifacts' paths
+          # upload-artifact doesn't support . or .. relative paths
+          # meaning you have to supply a list of resolved paths each on a different line
+          # but github step outputs are so shit you have to do this eldritch horror and use ::set-output
           artifacts=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
           artifacts=`realpath --no-symlinks $artifacts` # full path expansion
-
-          # my burning hatred for github step outputs
-          # actions/upload-artifact only accepts multiline values but step outputs are so shit you have to do this
           artifacts="${artifacts//'%'/'%25'}" 
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
-
           echo "::set-output name=artifacts::$artifacts"
 
       - name: Upload plugins
@@ -102,11 +101,11 @@ jobs:
           path: build.zip
 
       - name: Extract plugins
-        run: source code/extract.sh
+        run: source code/scrips/extract.sh
 
       - name: Test for existing PR
         id: test_existing
-        run: source code/test_existing.sh
+        run: source code/scrips/test_existing.sh
 
       - name: Checkout plugin repo data
         uses: actions/checkout@v3
@@ -121,7 +120,7 @@ jobs:
           path: plugins/repositories/${{ github.event.inputs.repo_id }}
 
       - name: Update plugins in repo
-        run: source code/update.sh
+        run: source code/scrips/update.sh
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
