@@ -26,6 +26,7 @@ The changelog that will be shown to the user when this plugin needs an update. T
 ### commit
 
 The full commit hash that this plugin version was compiled from. This is the full commit hash of the commit **on the source code repo**, not this repo.
+This can be null.
 
 ### version
 

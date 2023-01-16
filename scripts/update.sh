@@ -33,7 +33,7 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
 
     # make metadata.json
     # construct metadata.json from version & changelog manifest, hash & commit supplied as arg
-    hash="$(echo -n "$pluginPath" | sha256sum)"
+    hash="$(sha256sum "$pluginPath" | cut -d ' ' -f 1)"
     jq -c --arg hash "$hash" --arg commit "$srcCommit" \
       '{hash: $hash, changelog: .changelog, commit: $commit, version: .version}' \
       < "./$pluginName/manifest.json" \
@@ -45,11 +45,9 @@ done
 
 # make updater.json
 # This supplies the existing updater.json and all of the manifests, and overrides the existing with new
-# shellcheck disable=SC2094
-# SC2094 rw in same pipeline (no partial read pipes here)
-cat updater.json ./**/manifest.json | \
-  jq -cs '.[0] + (.[1:] | reduce .[] as $manifest ({}; . + {($manifest.name): {version: $manifest.version}}))' \
-  > updater.json
+newUpdater="$(cat updater.json ./**/manifest.json | \
+  jq -cs '.[0] + (.[1:] | reduce .[] as $manifest ({}; . + {($manifest.name): {version: $manifest.version}}))')"
+echo "$newUpdater" >updater.json
 
 # make full.json
 # Supplies all manifests, combines into single array and checks for duplicates

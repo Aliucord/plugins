@@ -7,6 +7,7 @@ While this file can differ slightly from plugin to plugin, it MUST have the requ
 - `version` -> A [SemVer](https://semver.org/) version
 - `authors` -> (optional) An array of `{ id?: "optional string id", name: "string name" }`
 - `license` -> (optional) An SPDX license identifier
+- `changelog` -> (optional | null) Markdown string changelog
 - `url` -> (NOT ALLOWED) Update url for 3rd party plugins
 
 Sample file (may differ):
