@@ -67,7 +67,7 @@ function commit() {
     git config --local user.email "actions@github.com"
     git config --local user.name "GitHub Actions"
     git add .
-    git commit -m "build: $REPO_OWNER/$REPO_NAME@$srcCommit"
+    git commit -m "build: $REPO_OWNER/$REPO_NAME@$srcCommit" || true
     git push -u origin "$BRANCH_NAME"
 }
 
