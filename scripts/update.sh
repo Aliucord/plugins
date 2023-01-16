@@ -13,6 +13,7 @@ fi
 
 # Get HEAD commit on target plugin repository
 srcCommit="$(cd "../repositories/$REPO_ID" && git rev-parse HEAD)"
+rm -rf "plugins/repositories/$REPO_ID/.git"
 
 # Copy plugin stuff into plugin dir
 for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
@@ -60,9 +61,6 @@ cat updater.json ./**/manifest.json | \
 cat ./**/manifest.json | \
   jq -cs 'if group_by(.name) | any(length>1) then "Duplicate manifest name key\n" | halt_error(1) else . end' \
   >full.json
-
-# Remove .git from copied repo
-rm -rf "plugins/repositories/$REPO_ID/.git"
 
 # Commit
 cd "$GITHUB_WORKSPACE/plugins"

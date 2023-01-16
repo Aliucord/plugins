@@ -115,11 +115,17 @@ jobs:
           path: plugins
           ref: ${{ steps.test_existing.outputs.base_branch }}
 
+      - name: Delete old target plugin repository
+        run: |
+          # Delete copied repo if exists to clone again
+          rm -rf plugins/repositories/${{ github.event.inputs.repo_id }} || exit 0
+
       - name: Download target plugin repository
         uses: actions/checkout@v3
         with:
           repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
           path: plugins/repositories/${{ github.event.inputs.repo_id }}
+          ref: release
 
       - name: Update plugins in repo
         env:
