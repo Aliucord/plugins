@@ -101,11 +101,11 @@ jobs:
           path: build.zip
 
       - name: Extract plugins
-        run: source code/scrips/extract.sh
+        run: source code/scripts/extract.sh
 
       - name: Test for existing PR
         id: test_existing
-        run: source code/scrips/test_existing.sh
+        run: source code/scripts/test_existing.sh
 
       - name: Checkout plugin repo data
         uses: actions/checkout@v3
@@ -120,7 +120,7 @@ jobs:
           path: plugins/repositories/${{ github.event.inputs.repo_id }}
 
       - name: Update plugins in repo
-        run: source code/scrips/update.sh
+        run: source code/scripts/update.sh
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
