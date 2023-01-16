@@ -109,7 +109,7 @@ jobs:
         id: test_existing
         env:
           REPO_ID: ${{ github.event.inputs.repo_id }}
-          PLUGINS_REPO_URL: https://github.com/${{ github.repository_owner }}/${{ github.repository }}.git
+          PLUGINS_REPO_URL: https://github.com/${{ github.repository }}.git
         run: source code/scripts/test_existing.sh
 
       - name: Checkout plugin repo data
