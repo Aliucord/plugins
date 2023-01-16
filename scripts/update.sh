@@ -8,21 +8,25 @@ cd plugins/modern
 
 # Get HEAD commit on target plugin repository
 srcCommit="$(cd "../repositories/$REPO_ID" && git rev-parse HEAD)"
-rm -rf "plugins/repositories/$REPO_ID/.git"
+rm -rf "../repositories/$REPO_ID/.git"
 
 # Copy plugin stuff into plugin dir
 for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
     dirPath="$(dirname "$pluginPath")"
     pluginName="$(basename "${pluginPath::-4}")"
+    hash="$(sha256sum "$pluginPath" | cut -d ' ' -f 1)"
+    symlinkPath="./$pluginName/repository"
 
     mkdir -p "$pluginName"
 
     # owner validation
     # if symlink exists, check if the last section of target path matches repo id
-    symlinkPath="./$pluginName/repository"
     if [ -f "$symlinkPath" ] && [ "$(readlink -f "$symlinkPath" | xargs basename)" != "$REPO_ID" ]; then
         echo "Failed validation! This repository does not own the plugin $pluginName"
         exit 1
+    else
+        # make repo symlink
+        ln -s "../repositories/$REPO_ID" "$symlinkPath"
     fi
 
     # copy over plugin .zip
@@ -33,14 +37,10 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
 
     # make metadata.json
     # construct metadata.json from version & changelog manifest, hash & commit supplied as arg
-    hash="$(sha256sum "$pluginPath" | cut -d ' ' -f 1)"
     jq -c --arg hash "$hash" --arg commit "$srcCommit" \
       '{hash: $hash, changelog: .changelog, commit: $commit, version: .version}' \
       < "./$pluginName/manifest.json" \
       > "./$pluginName/metadata.json"
-
-    # make repo symlink
-    ln -s "../repositories/$REPO_ID" "$symlinkPath"
 done
 
 # make updater.json
