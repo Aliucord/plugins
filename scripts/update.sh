@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# shellcheck disable=2164,SC2193,SC2103
+# shellcheck disable=2164,SC2103
 # SC2164 cd fail
-# SC2193 never equal
 # SC2103 ( subshell ) for cd ..
 
 cd plugins/modern

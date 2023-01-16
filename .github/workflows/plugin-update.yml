@@ -36,8 +36,7 @@ jobs:
           node-version: 18
 
       - name: Setup corepack
-        run: |
-          corepack enable
+        run: corepack enable
 
       # aliuhook
       # - name: Setup JDK 11
