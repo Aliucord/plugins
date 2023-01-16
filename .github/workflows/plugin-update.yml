@@ -71,7 +71,7 @@ jobs:
           artifacts="${artifacts//'%'/'%25'}" 
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
-          echo "::set-output name=artifacts::$artifactPaths"
+          echo "::set-output name=artifacts::$artifacts"
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
