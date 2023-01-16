@@ -17,6 +17,7 @@ on:
         required: true
 
 jobs:
+  # Unsafe job, no tokens or secrets must be touched at all after build command is run, including cloning
   build:
     name: Build target repository
     runs-on: ubuntu-20.04
@@ -81,9 +82,6 @@ jobs:
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
           echo "::set-output name=artifacts::$artifacts"
-          
-          git checkout -b guh
-          git push -u origin guh
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
