@@ -59,9 +59,23 @@ cat ./**/manifest.json | \
 
 # Commit
 cd "$GITHUB_WORKSPACE/plugins"
-git checkout -b "$BRANCH_NAME"
-git config --local user.email "actions@github.com"
-git config --local user.name "GitHub Actions"
-git add .
-git commit -m "build: $REPO_OWNER/$REPO_NAME@$srcCommit"
-git push -u origin "$BRANCH_NAME"
+
+function commit() {
+    git config --local user.email "actions@github.com"
+    git config --local user.name "GitHub Actions"
+    git add .
+    git commit -m "build: $REPO_OWNER/$REPO_NAME@$srcCommit"
+    git push -u origin "$BRANCH_NAME"
+}
+
+if [ "$BASE_BRANCH" == "data" ]; then
+  git checkout -b "$BRANCH_NAME"
+  commit
+  gh pr create \
+    --head \
+    --base data \
+    --title "update: $REPO_OWNER/$REPO_NAME" \
+    --body "cc: @$REPO_OWNER"
+else
+  commit
+fi
