@@ -72,7 +72,7 @@ if [ "$BASE_BRANCH" == "data" ]; then
   git checkout -b "$BRANCH_NAME"
   commit
   gh pr create \
-    --head "origin:BRANCH_NAME" \
+    --head "origin:$BRANCH_NAME" \
     --base "data" \
     --title "update: $REPO_OWNER/$REPO_NAME" \
     --body "cc: @$REPO_OWNER"

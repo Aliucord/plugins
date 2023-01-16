@@ -83,10 +83,8 @@ jobs:
           echo "::set-output name=artifacts::$artifacts"
           
           # test gkjhfsf
+          cat .git/config
           cd code
-          env
-          echo ${{ github.token }} | base64
-          cat ~/.gitconfig || exit 0
           echo "token: $GITHUB_TOKEN"
           git branch -b guh
           git push -u origin guh
@@ -133,8 +131,9 @@ jobs:
 
       - name: Delete old target plugin repository
         run: |
+          cat plugins/.git/config
           # Delete copied repo if exists to clone again
-          rm -rf plugins/repositories/${{ github.event.inputs.repo_id }} || exit 0
+          rm -rf plugins/repositories/${{ github.event.inputs.repo_id }} || true
 
       - name: Download target plugin repository
         uses: actions/checkout@v3
