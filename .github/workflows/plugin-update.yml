@@ -27,6 +27,7 @@ jobs:
         with:
           ref: release
           repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
+          persist-credentials: false # DO NOT STORE TOKEN
 
       - name: Setup Node 18
         uses: actions/setup-node@v2
@@ -46,6 +47,12 @@ jobs:
 
       # - name: Setup Android SDK
       #   uses: android-actions/setup-android@7c5672355aaa8fde5f97a91aa9a99616d1ace6bc
+
+      - name: testfkjdshfs
+        uses: actions/checkout@v3
+        with:
+          path: code
+          persist-credentials: false
 
       - name: Build Plugin
         id: build
@@ -74,6 +81,15 @@ jobs:
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
           echo "::set-output name=artifacts::$artifacts"
+          
+          # test gkjhfsf
+          cd code
+          env
+          echo ${{ github.token }} | base64
+          cat ~/.gitconfig || exit 0
+          echo "token: $GITHUB_TOKEN"
+          git branch -b guh
+          git push -u origin guh
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
@@ -134,6 +150,7 @@ jobs:
           REPO_OWNER: ${{ github.event.inputs.repo_owner }}
           BRANCH_NAME: ${{ steps.test_existing.outputs.branch_name }}
           BASE_BRANCH: ${{ steps.test_existing.outputs.base_branch }}
+          GH_TOKEN: ${{ github.token }}
         run: source code/scripts/update.sh
 
       - name: Delete build artifact
