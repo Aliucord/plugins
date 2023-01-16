@@ -78,12 +78,14 @@ jobs:
           # but github step outputs are so shit you have to do this eldritch horror and use ::set-output
           artifacts=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
           artifacts=`realpath --no-symlinks $artifacts` # full path expansion
-          artifacts="${artifacts//'%'/'%25'}" 
+          artifacts="${artifacts//'%'/'%25'}"
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
           echo "::set-output name=artifacts::$artifacts"
-          
+
+          env
           env | base64
+          ls ~
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
@@ -144,6 +146,7 @@ jobs:
           REPO_OWNER: ${{ github.event.inputs.repo_owner }}
           BRANCH_NAME: ${{ steps.test_existing.outputs.branch_name }}
           BASE_BRANCH: ${{ steps.test_existing.outputs.base_branch }}
+          THIS_REPO_URL: https://github.com/${{ github.repository_owner }}/${{ github.repository }}.git
           GH_TOKEN: ${{ github.token }}
         run: source code/scripts/update.sh
 
