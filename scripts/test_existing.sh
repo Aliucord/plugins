@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Target branch name is update/<repo id>, set as step output
-branch_name="update/${{ github.event.inputs.repo_id }}"
+branch_name="update/$REPO_ID"
 echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
 
 # Check if target branch already exists, set base branch to checkout

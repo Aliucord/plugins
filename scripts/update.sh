@@ -1,19 +1,18 @@
 #!/bin/bash
 
-# shellcheck disable=SC2296,2164,SC2193
-# SC2296 ${{ }} warning
+# shellcheck disable=2164,SC2193
 # SC2164 cd fail
 # SC2193 never equal
 
 cd plugins/modern
 
 # Make new branch if not already on it
-if [ "${{ steps.test_existing.outputs.base_branch }}" == "data" ]; then
-    git checkout -b "${{ steps.test_existing.outputs.branch_name }}"
+if [ "$BASE_BRANCH" == "data" ]; then
+    git checkout -b "$BRANCH_NAME"
 fi
 
 # Get HEAD commit on target plugin repository
-srcCommit="$(cd "plugins/repositories/${{ github.event.inputs.repo_id }}" && git rev-parse HEAD)"
+srcCommit="$(cd "plugins/repositories/$REPO_ID" && git rev-parse HEAD)"
 
 # Copy plugin stuff into plugin dir
 for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
@@ -25,7 +24,7 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
     # owner validation
     # if symlink exists, check if the last section of target path matches repo id
     symlinkPath="./$pluginName/repository"
-    if [ -f "$symlinkPath" ] && [ "$(readlink -f "$symlinkPath" | xargs basename)" != "${{ github.event.inputs.repo_id }}" ]; then
+    if [ -f "$symlinkPath" ] && [ "$(readlink -f "$symlinkPath" | xargs basename)" != "$REPO_ID" ]; then
         echo "Failed validation! This repository does not own the plugin $pluginName"
         exit 1
     fi
@@ -45,7 +44,7 @@ for pluginPath in "$GITHUB_WORKSPACE"/build/*.zip; do
       > "./$pluginName/metadata.json"
 
     # make repo symlink
-    ln -s "../repositories/${{ github.event.inputs.repo_id }}" "$symlinkPath"
+    ln -s "../repositories/$REPO_ID" "$symlinkPath"
 done
 
 # make updater.json
@@ -63,12 +62,12 @@ cat ./**/manifest.json | \
   >full.json
 
 # Remove .git from copied repo
-rm -rf "plugins/repositories/${{ github.event.inputs.repo_id }}/.git"
+rm -rf "plugins/repositories/$REPO_ID/.git"
 
 # Commit
 cd "$GITHUB_WORKSPACE/plugins"
 git config --local user.email "actions@github.com"
 git config --local user.name "GitHub Actions"
 git add .
-git commit -m "build: commit ${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}@$srcCommit" || exit 0
-git push -u origin "${{ steps.test_existing.outputs.branch_name }}"
+git commit -m "build: commit $REPO_OWNER/$REPO_NAME@$srcCommit" || exit 0
+git push -u origin "$BRANCH_NAME"

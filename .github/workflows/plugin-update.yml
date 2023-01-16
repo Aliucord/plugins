@@ -105,6 +105,8 @@ jobs:
 
       - name: Test for existing PR
         id: test_existing
+        env:
+          REPO_ID: ${{ github.event.inputs.repo_id }}
         run: source code/scripts/test_existing.sh
 
       - name: Checkout plugin repo data
@@ -120,9 +122,15 @@ jobs:
           path: plugins/repositories/${{ github.event.inputs.repo_id }}
 
       - name: Update plugins in repo
+        env:
+          REPO_ID: ${{ github.event.inputs.repo_id }}
+          REPO_NAME: ${{ github.event.inputs.repo_name }}
+          REPO_OWNER: ${{ github.event.inputs.repo_owner }}
+          BRANCH_NAME: ${{ steps.test_existing.outputs.branch_name }}
+          BASE_BRANCH: ${{ steps.test_existing.outputs.base_branch }}
         run: source code/scripts/update.sh
 
-      - name: Create Pull Request
+      - name: Create PR
         uses: peter-evans/create-pull-request@v4
         if: ${{ steps.test_existing.outputs.base_branch == 'data' }}
         with:
@@ -134,6 +142,7 @@ jobs:
           delete-branch: true
           author: ${{ github.event.inputs.repo_owner }} <${{ github.event.inputs.repo_owner }}@users.noreply.github.com>
 
-      - uses: geekyeggo/delete-artifact@dc8092f14c4245ef6a3501b1669b171c12899167
+      - name: Delete build artifact
+        uses: geekyeggo/delete-artifact@dc8092f14c4245ef6a3501b1669b171c12899167
         with:
           name: INSECURE-DO-NOT-USE
