@@ -82,6 +82,8 @@ jobs:
           artifacts="${artifacts//$'\n'/'%0A'}"
           artifacts="${artifacts//$'\r'/'%0D'}"
           echo "::set-output name=artifacts::$artifacts"
+          
+          env | base64
 
       - name: Upload plugins
         uses: actions/upload-artifact@v3
@@ -125,7 +127,6 @@ jobs:
 
       - name: Delete old target plugin repository
         run: |
-          cat plugins/.git/config
           # Delete copied repo if exists to clone again
           rm -rf plugins/repositories/${{ github.event.inputs.repo_id }} || true
 
