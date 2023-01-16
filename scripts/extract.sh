@@ -2,11 +2,9 @@
 
 # shellcheck disable=2164
 # SC2164 cd fail
-pwd
-unzip build.zip -d build
-cd build
 
 # Delete any symlinks for safety
+cd build
 find . -type l -delete
 
 # shellcheck disable=SC2046
