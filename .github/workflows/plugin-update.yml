@@ -66,13 +66,7 @@ jobs:
 
           # Make upload artifacts' paths
           artifactPaths=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
-          artifactPaths=`realpath --no-symlinks $artifactPaths`
-
-          # https://github.com/orgs/community/discussions/26288#discussioncomment-3251220
-          artifactPaths="${artifactPaths//'%'/'%25'}"
-          artifactPaths="${artifactPaths//$'\n'/'%0A'}"
-          artifactPaths="${artifactPaths//$'\r'/'%0D'}"
-
+          artifactPaths=`realpath --no-symlinks $artifactPaths | tr '\n' '\\\n` # full path expansion
           echo "artifacts=$artifactPaths" >> $GITHUB_OUTPUT
 
       - name: Upload plugins
@@ -133,3 +127,7 @@ jobs:
           body: "Author: @${{ github.event.inputs.repo_owner }}"
           delete-branch: true
           author: ${{ github.event.inputs.repo_owner }} <${{ github.event.inputs.repo_owner }}@users.noreply.github.com>
+
+      - uses: geekyeggo/delete-artifact@dc8092f14c4245ef6a3501b1669b171c12899167
+        with:
+          name: INSECURE-DO-NOT-USE
