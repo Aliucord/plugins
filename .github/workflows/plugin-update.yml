@@ -1,0 +1,145 @@
+name: Plugin update
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_owner:
+        type: string
+        description: Username of the target repository's owner
+        required: true
+      repo_name:
+        type: string
+        description: Name of the target repository
+        required: true
+      repo_id:
+        type: string
+        description: Id of the target repository
+        required: true
+
+jobs:
+  # Unsafe job, no tokens or secrets must be touched at all after build command is run, including cloning
+  build:
+    name: Build target repository
+    runs-on: ubuntu-20.04
+    timeout-minutes: 2
+    steps:
+      - name: Checkout target plugin repository
+        uses: actions/checkout@v3
+        with:
+          ref: release
+          repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
+          persist-credentials: false # DO NOT STORE TOKEN
+
+      - name: Setup Node 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Setup corepack
+        run: corepack enable
+
+      # aliuhook
+      # - name: Setup JDK 11
+      #   uses: actions/setup-java@v2
+      #   with:
+      #     java-version: 11
+      #     distribution: zulu
+
+      # - name: Setup Android SDK
+      #   uses: android-actions/setup-android@7c5672355aaa8fde5f97a91aa9a99616d1ace6bc
+
+      - name: Build Plugin
+        id: build
+        env:
+          CI: "true"
+        run: |
+          # Check if aliucord.json config exists
+          if [ ! -f aliucord.json ]; then
+            echo "No aliucord.json config present!"
+            exit 1
+          fi
+
+          # Read dist folder from aliucord.json
+          echo "dist_folder=$(jq -r '.distFolder' < aliucord.json)" >> $GITHUB_OUTPUT
+
+          # Run the buildCommand from aliucord.json
+          jq -r '.buildCommand' < aliucord.json | sh
+
+          # Get upload artifacts' paths
+          # upload-artifact doesn't support . or .. relative paths
+          # meaning you have to supply a list of resolved paths each on a different line
+          # but github step outputs are so shit you have to do this eldritch horror and use ::set-output
+          artifacts=`echo ./aliucord.json ./$(jq -r '.distFolder' < aliucord.json)/*.{zip,json}` # brace expansion
+          artifacts=`realpath --no-symlinks $artifacts` # full path expansion
+          artifacts="${artifacts//'%'/'%25'}"
+          artifacts="${artifacts//$'\n'/'%0A'}"
+          artifacts="${artifacts//$'\r'/'%0D'}"
+          echo "::set-output name=artifacts::$artifacts"
+
+      - name: Upload plugins
+        uses: actions/upload-artifact@v3
+        with:
+          name: INSECURE-DO-NOT-USE
+          retention-days: 3
+          if-no-files-found: error
+          path: ${{ steps.build.outputs.artifacts }}
+
+  update:
+    name: Make/Update PR
+    needs: build
+    runs-on: ubuntu-20.04
+    timeout-minutes: 1
+    steps:
+      - name: Checkout plugin repo code
+        uses: actions/checkout@v3
+        with:
+          path: code
+
+      - name: Download built plugins artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: INSECURE-DO-NOT-USE
+          path: build
+
+      - name: Extract plugins
+        run: source code/scripts/extract.sh
+
+      - name: Test for existing PR
+        id: test_existing
+        env:
+          REPO_ID: ${{ github.event.inputs.repo_id }}
+          PLUGINS_REPO_URL: https://github.com/${{ github.repository }}.git
+        run: source code/scripts/test_existing.sh
+
+      - name: Checkout plugin repo data
+        uses: actions/checkout@v3
+        with:
+          path: plugins
+          ref: ${{ steps.test_existing.outputs.base_branch }}
+
+      - name: Delete old target plugin repository
+        run: |
+          # Delete copied repo if exists to clone again
+          rm -rf plugins/repositories/${{ github.event.inputs.repo_id }} || true
+
+      - name: Download target plugin repository
+        uses: actions/checkout@v3
+        with:
+          repository: "${{ github.event.inputs.repo_owner }}/${{ github.event.inputs.repo_name }}"
+          path: plugins/repositories/${{ github.event.inputs.repo_id }}
+          ref: release
+
+      - name: Update plugins in repo
+        env:
+          REPO_ID: ${{ github.event.inputs.repo_id }}
+          REPO_NAME: ${{ github.event.inputs.repo_name }}
+          REPO_OWNER: ${{ github.event.inputs.repo_owner }}
+          BRANCH_NAME: ${{ steps.test_existing.outputs.branch_name }}
+          BASE_BRANCH: ${{ steps.test_existing.outputs.base_branch }}
+          GH_TOKEN: ${{ github.token }}
+        run: source code/scripts/update.sh
+
+      - name: Delete build artifact
+        uses: geekyeggo/delete-artifact@dc8092f14c4245ef6a3501b1669b171c12899167
+        with:
+          name: INSECURE-DO-NOT-USE
