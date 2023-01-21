@@ -20,7 +20,7 @@ Prerequisites:
 # Updates & other plugins
 
 If you are not using a monorepo to store multiple plugins at once, go back to the section above for your new
-repository.f
+repository.
 
 Deploying updates or publishing new plugins is still relatively simple:
 
