@@ -50,13 +50,23 @@ done
 # make updater.json
 # This supplies the existing updater.json and all of the manifests, and overrides the existing with new
 newUpdater="$(cat updater.json ./**/manifest.json | \
-  jq -cs '.[0] + (.[1:] | reduce .[] as $manifest ({}; . + {($manifest.name): {version: $manifest.version}}))')"
+  jq -cs '.[0] + (.[1:] | reduce .[] as $manifest ({}; . + {($manifest.name): {version: $manifest.version}}))' | \
+
+  # Move every root item to a new line (prevent merge conflicts)
+   perl -pe 's/".+?":{(?:[^{}]+|(?R))*+}/\n$&/g' | \
+
+  # Move last bracket to a new line
+  sed 's/}$/\n}/'
+)"
 echo "$newUpdater" > updater.json
+
+# Verify updater validity
+jq type <<< "$newUpdater" 1>/dev/null
 
 # make full.json
 # Supplies all manifests, combines into single array and checks for duplicates
 cat ./**/manifest.json | \
-  jq -cs 'if group_by(.name) | any(length>1) then "Duplicate manifest name key\n" | halt_error(1) else . end' \
+  jq -s 'if group_by(.name) | any(length>1) then "Duplicate manifest name key\n" | halt_error(1) else . end' \
   > full.json
 
 # Commit
