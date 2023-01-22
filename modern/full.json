@@ -27,6 +27,7 @@
     "repo": "https://github.com/OmegaSunkey/omegaplugins",
     "version": "1.0.0",
     "description": "Support for UserBG backgrounds.",
+    "changelog": "nice changelog",
     "name": "UserBG"
   }
 ]
