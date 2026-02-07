@@ -1,0 +1,16 @@
+# Build
+/local.properties
+/.kotlin/
+/.gradle/
+**/build/
+**/.cxx/
+**/.externalNativeBuild/
+
+# Editor
+/.vscode/
+/.idea/
+/*.iml
+
+# System
+.DS_Store
+Thumbs.db

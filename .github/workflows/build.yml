@@ -1,0 +1,39 @@
+name: "Build"
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    name: Build Plugins
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Build
+        run: |
+          cd $GITHUB_WORKSPACE
+          chmod +x ./gradlew
+          ./gradlew make
+
+      - name: Upload plugin artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: plugins
+          if-no-files-found: error
+          path: ${{ github.workspace }}/plugins/**/build/outputs/*.zip
