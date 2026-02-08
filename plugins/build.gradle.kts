@@ -17,12 +17,12 @@ subprojects {
     }
 
     configure<LibraryExtension> {
-        // TODO: Change to your package name
-        namespace = "com.github.yournamehere"
+        namespace = "com.aliucord.plugins"
         compileSdk = 36
 
         defaultConfig {
-            minSdk = 21
+            // TODO: lower to Android 5 (API 21)
+            minSdk = 24
         }
 
         buildFeatures {
@@ -37,11 +37,7 @@ subprojects {
     }
 
     configure<AliucordExtension> {
-        // TODO: Change to your name and user ID
-        author("yournamehere", 0L, hyperlink = true)
-
-        // TODO: Change to your repository
-        github("https://github.com/Aliucord/plugins-template")
+        github("https://github.com/Aliucord/plugins")
     }
 
     configure<KtlintExtension> {
