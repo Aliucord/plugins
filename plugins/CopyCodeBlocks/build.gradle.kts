@@ -1,0 +1,11 @@
+version = "1.0.1"
+description = "Adds a copy button on multi-line codeblocks!"
+
+aliucord {
+    changelog = """
+        # 1.0.0
+        * Initial version
+    """.trimIndent()
+
+    author("RazerTexz", 633565155501801472L)
+}
