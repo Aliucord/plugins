@@ -1,6 +1,6 @@
 [versions]
-aliucord = "2.7.0"
-aliucord-gradle = "2.3.0"
+aliucord = "2.7.1"
+aliucord-gradle = "2.2.0"
 #noinspection AndroidGradlePluginVersion
 android = "8.13.2"
 discord = "126021"
