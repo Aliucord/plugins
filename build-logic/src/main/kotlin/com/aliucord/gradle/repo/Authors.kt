@@ -31,6 +31,7 @@ import com.aliucord.gradle.AliucordExtension
 @Suppress("SpellCheckingInspection", "unused", "RedundantSuppression")
 object Authors {
     val Aliucord = Author(name = "Aliucord")
+    val Ushie = Author("Ushie", 399862294143696897L, true)
 }
 
 /**
