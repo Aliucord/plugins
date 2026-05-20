@@ -14,7 +14,12 @@ import com.aliucord.gradle.AliucordExtension
  * import com.aliucord.gradle.Authors
  * import com.aliucord.gradle.author
  *
- * // ...
+ * plugins {
+ *     id("com.aliucord.plugins-repo")
+ * }
+ *
+ * version = "..."
+ * description = "..."
  *
  * aliucord {
  *     author(Authors.xyz)
