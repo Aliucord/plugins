@@ -24,8 +24,6 @@ import java.util.ArrayList
 
 @AliucordPlugin
 class DiscordJS : Plugin() {
-    private val logger = Logger("DiscordJS")
-
     override fun start(context: Context) {
         val arguments = ArrayList<ApplicationCommandOption>()
         arguments.add(createCommandOption(ApplicationCommandType.STRING, "query", "What to search for.", null, true))
