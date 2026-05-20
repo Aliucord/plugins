@@ -12,6 +12,7 @@ ktlint-plugin = "14.2.0"
 
 [libraries]
 aliucord = { module = "com.aliucord:Aliucord", version.ref = "aliucord" }
+aliucord-gradle = { module = "com.aliucord:gradle", version.ref = "aliucord-gradle" }
 discord = { module = "com.discord:discord", version.ref = "discord" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-stdlib" }
 
