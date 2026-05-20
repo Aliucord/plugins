@@ -44,7 +44,11 @@ in special circumstances.
     - Transforming images with an external service (ex: petpet)
     - Sending a random image of XYZ with a slash command (ex: https://minky.materii.dev)
     - Sending info in chat from an external service with a slash command (this should be a Discord bot, not a plugin!)
-10. All plugin submissions are subject to the discretion of staff to ensure safety, security, and quality for users.
+10. Plugin submissions must not be vibecoded. AI-assisted development is acceptable **only if** you know what you
+    are doing, and you are willing to maintain and improve your plugin beyond what the AI is capable of, if asked.
+    Do **NOT** submit code you do not understand, or cannot explain!
+11. All plugin submissions are subject to the discretion of staff to ensure the safety,
+    security, and quality of Aliucord.
 
 ## Submissions
 
