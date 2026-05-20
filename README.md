@@ -100,16 +100,4 @@ that the `builds` directory is hidden from the tree view in Android Studio by de
 
 ## License
 
-Everything in this repo is released into the public domain.
-You may use it however you wish under no warranty. However, we recommend adding
-the [GPL v3](https://www.gnu.org/licenses/gpl-3.0.txt) license to your plugins!
-To do so, copy the license text into a file named "LICENSE" at the repository root.
-
-THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
-APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
-HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY
-OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
-THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM
-IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF
-ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details.
