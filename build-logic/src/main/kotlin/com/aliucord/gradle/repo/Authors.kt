@@ -32,6 +32,7 @@ import com.aliucord.gradle.AliucordExtension
 object Authors {
     val Aliucord = Author(name = "Aliucord")
     val Ushie = Author("Ushie", 399862294143696897L, true)
+    val reisxd = Author("reisxd", 1385511666266935318L)
 }
 
 /**
