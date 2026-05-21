@@ -39,7 +39,7 @@ object Authors {
     val js6pak = Author("6pak", 141580516380901376L)
     val RazerTexz = Author("RazerTexz", 633565155501801472L)
     val LampDelivery = Author("LampDelivery", 650805815623680030L)
-    val Ty = author("Ty", 487443883127472129L)
+    val Ty = Author("Ty", 487443883127472129L)
 }
 
 /**
