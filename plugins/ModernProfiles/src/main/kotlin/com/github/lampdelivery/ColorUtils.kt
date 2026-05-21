@@ -1,0 +1,85 @@
+package com.github.lampdelivery
+
+import android.util.Log
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.round
+
+object ColorUtils {
+    fun getLuminance(color: Int): Double {
+        val r = (color shr 16) and 0xFF
+        val g = (color shr 8) and 0xFF
+        val b = color and 0xFF
+
+        fun channel(c: Int): Double {
+            val v = c / 255.0
+            return if (v <= 0.03928) v / 12.92 else ((v + 0.055) / 1.055).pow(2.4)
+        }
+        return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+    }
+
+    fun rgbToHsl(color: Int): Triple<Double, Double, Double> {
+        val r = ((color shr 16) and 0xFF) / 255.0
+        val g = ((color shr 8) and 0xFF) / 255.0
+        val b = (color and 0xFF) / 255.0
+        val max = maxOf(r, g, b)
+        val min = minOf(r, g, b)
+        var h = 0.0
+        val l = (max + min) / 2.0
+        val d = max - min
+        val s = if (d == 0.0) 0.0 else d / (1.0 - abs(2.0 * l - 1.0))
+        if (d != 0.0) {
+            h = when (max) {
+                r -> ((g - b) / d) % 6.0
+                g -> ((b - r) / d) + 2.0
+                else -> ((r - g) / d) + 4.0
+            }
+            h *= 60.0
+            if (h < 0) h += 360.0
+        }
+        return Triple(h, s, l)
+    }
+
+    fun hslToRgb(h: Double, s: Double, l: Double): Int {
+        val c = (1 - abs(2 * l - 1)) * s
+        val hh = h / 60.0
+        val x = c * (1 - abs(hh % 2 - 1))
+        val (r1, g1, b1) = when {
+            hh < 1 -> Triple(c, x, 0.0)
+            hh < 2 -> Triple(x, c, 0.0)
+            hh < 3 -> Triple(0.0, c, x)
+            hh < 4 -> Triple(0.0, x, c)
+            hh < 5 -> Triple(x, 0.0, c)
+            else -> Triple(c, 0.0, x)
+        }
+        val m = l - c / 2.0
+        val rr = ((r1 + m) * 255.0).toInt().coerceIn(0, 255)
+        val rg = ((g1 + m) * 255.0).toInt().coerceIn(0, 255)
+        val rb = ((b1 + m) * 255.0).toInt().coerceIn(0, 255)
+        return 0xFF000000.toInt() or (rr shl 16) or (rg shl 8) or rb
+    }
+
+    fun mix(a: Int, b: Int, t: Double): Int {
+        val ar = (a shr 16) and 0xFF
+        val ag = (a shr 8) and 0xFF
+        val ab = a and 0xFF
+        val br = (b shr 16) and 0xFF
+        val bg = (b shr 8) and 0xFF
+        val bb = b and 0xFF
+        val rr = round(ar * (1 - t) + br * t).toInt().coerceIn(0, 255)
+        val rg = round(ag * (1 - t) + bg * t).toInt().coerceIn(0, 255)
+        val rb = round(ab * (1 - t) + bb * t).toInt().coerceIn(0, 255)
+        return 0xFF000000.toInt() or (rr shl 16) or (rg shl 8) or rb
+    }
+
+    fun getColorDebugString(name: String, color: Int): String {
+        val hex = java.lang.String.format(java.util.Locale.US, "#%06X", color and 0xFFFFFF)
+        val (h, s, l) = rgbToHsl(color)
+        val lum = getLuminance(color)
+        return java.lang.String.format(java.util.Locale.US, "%s: %s (HSL: %.1f, %.2f, %.2f | Lum: %.4f)", name, hex, h, s, l, lum)
+    }
+
+    fun logColor(name: String, color: Int) {
+        Log.d("ModernProfiles", getColorDebugString(name, color))
+    }
+}
