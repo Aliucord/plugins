@@ -25,9 +25,11 @@ class ReverseImageSearch : Plugin() {
     }
 
     override fun load(ctx: Context) {
+        val res = resources!!
+
         pluginIcon = ResourcesCompat.getDrawable(
-            resources,
-            resources.getIdentifier("ic_baseline_image_search_24", "drawable", "com.aliucord.plugins"),
+            res,
+            res.getIdentifier("ic_baseline_image_search_24", "drawable", "com.aliucord.plugins"),
             null
         )!!
     }
