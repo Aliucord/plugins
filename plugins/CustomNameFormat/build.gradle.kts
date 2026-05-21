@@ -9,6 +9,5 @@ version = "1.0.1"
 description = "Allows you to customize nickname and display names "
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }

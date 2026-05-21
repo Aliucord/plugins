@@ -9,6 +9,5 @@ version = "1.0.0"
 description = "Copy channel links from the context menu"
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }

@@ -9,6 +9,5 @@ version = "1.0.0"
 description = "Adds @ before usernames in profiles"
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }

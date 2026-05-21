@@ -22,6 +22,5 @@ aliucord.changelog.set("""
 """.trimIndent())
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }

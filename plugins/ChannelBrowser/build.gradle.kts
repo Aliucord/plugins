@@ -13,8 +13,7 @@ version = "0.1.0"
 description = "Manage your channel list from a menu, show/hide channels and follow/unfollow categories"
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }
 
 dependencies {

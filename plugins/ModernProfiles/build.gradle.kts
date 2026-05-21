@@ -9,8 +9,7 @@ version = "1.0.2"
 description = "Allows you to view new user profiles, but modernized"
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }
 
 aliucord.changelog.set("""

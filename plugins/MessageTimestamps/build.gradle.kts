@@ -9,6 +9,5 @@ version = "1.0.2"
 description = "Configure the message timestamps"
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }

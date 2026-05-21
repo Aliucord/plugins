@@ -11,6 +11,5 @@ version = "1.0.0"
 description = "Makes links compact like DiscordRN"
 
 aliucord {
-    author(Authors.Lamp)
-    deploy.set(true)
+    author(Authors.LampDelivery)
 }
