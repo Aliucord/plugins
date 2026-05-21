@@ -35,7 +35,7 @@ class BetterMarkdown : Plugin() {
     override fun start(context: Context) {
 
         try {
-            patcher.patch(inputClass, listenerMethod, arrayOfNulls(0), object : XC_MethodHook() {
+            patcher.patch(inputClass, listenerMethod, emptyArray(), object : XC_MethodHook() {
                 override fun afterHookedMethod(param: MethodHookParam) {
                     try {
                         // Obtain the editor
