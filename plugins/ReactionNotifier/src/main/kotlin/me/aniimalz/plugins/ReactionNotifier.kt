@@ -59,8 +59,7 @@ class ReactionNotifier : Plugin() {
             iconTopRight = ContextCompat.getDrawable(ctx, R.e.ic_guild_settings_24dp)
             setOnClickTopRightIcon { Utils.openPageWithProxy(Utils.appActivity, PluginSettings(settings)) }
             setOnClick {
-                val comp = (StoreStream.Companion).messagesLoader
-                comp.jumpToMessage(msg.channelId, msg.id)
+                StoreStream.getMessagesLoader().jumpToMessage(msg.channelId, msg.id)
             }
         }
         if (settings.getBool("notifyAdd", true) && !removed) NotificationsAPI.display(notif)
