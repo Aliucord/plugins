@@ -5,11 +5,13 @@ plugins {
     id("com.aliucord.plugins-repo")
 }
 
-version = "1.0.3"
+version = "1.0.4"
 description = "A plugin that adds a button for reverse image searching a sent image."
 
 aliucord {
     changelog.set("""
+        # Version 1.0.4
+        * Fix reverse searching not working on expired discord urls and images inside embeds (thanks Delphox)
         # Version 1.0.3
         * Replace google images search with google lens, as the old images URL no longer works (thanks Delphox)
         # Version 1.0.2

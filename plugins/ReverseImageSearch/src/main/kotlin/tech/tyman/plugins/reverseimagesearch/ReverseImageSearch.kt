@@ -43,7 +43,7 @@ class ReverseImageSearch : Plugin() {
             val btnId = Utils.getResId("menu_media_browser", "id")
             val btn = Utils.appActivity.findViewById<ActionMenuItemView>(btnId)
             btn.setOnLongClickListener {
-                val url = mostRecentIntent.getStringExtra("INTENT_MEDIA_URL") ?: return@setOnLongClickListener false
+                val url = mostRecentIntent.getStringExtra("INTENT_IMAGE_URL") ?: return@setOnLongClickListener false
                 if (settings.engine == Engine.ASK) {
                     EngineSheet(url)
                         .show(Utils.appActivity.supportFragmentManager, "Reverse Image Search")
