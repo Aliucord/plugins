@@ -37,6 +37,11 @@ object Authors {
     val Alyxia = Author("Alyxia", 465702500146610176L)
     val oSumAtrIX = Author("oSumAtrIX", 737323631117598811L)
     val RazerTexz = Author("RazerTexz", 633565155501801472L)
+    val Xinto = Author("Xinto", 423915768191647755L)
+    val zt = Author("zt", 289556910426816513L)
+    val rushii = Author("rushii", 0L, false)
+    val Nyako = Author("nyakowint", 118437263754395652L)
+    val Juby210 = Author("Juby210", 324622488644616195L)
 }
 
 /**
