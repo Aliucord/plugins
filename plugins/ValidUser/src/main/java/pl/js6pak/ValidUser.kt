@@ -179,7 +179,8 @@ class ValidUser : Plugin() {
                             logger.verbose("Fetched [$userId] = ${if (user == null) "null" else CoreUser(user).username}")
 
                             if (user != null) {
-                                storeUser.notifyUserUpdated.invoke(user)
+                                @Suppress("UNCHECKED_CAST")
+                                (storeUser.notifyUserUpdated as (com.discord.api.user.User) -> Unit)(user)
                                 refreshMessages()
                             }
 

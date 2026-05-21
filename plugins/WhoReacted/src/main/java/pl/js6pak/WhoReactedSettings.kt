@@ -45,7 +45,7 @@ class WhoReactedSettings(private val plugin: WhoReacted) : SettingsPage() {
     override fun onViewBound(view: View) {
         super.onViewBound(view)
 
-        setActionBarTitle(plugin.getName())
+        setActionBarTitle("WhoReacted")
 
         val ctx = view.context
 
