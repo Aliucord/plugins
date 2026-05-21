@@ -52,6 +52,7 @@ object Authors {
     val Vendicated = Author("Vendicated", 343383572805058560L)
     val Derlan = Author("Derlan", 821545900807028757L)
     val Link = Author("Link", 725923756555501658L)
+    val Wing = Author("Wing", 298295889720770563L)
 }
 
 /**
