@@ -47,6 +47,7 @@ object Authors {
     val miaaaa0a = Author("miaaaa0a", 435750383491481602L)
     val Vendicated = Author("Vendicated", 343383572805058560L)
     val mantikafasi = Author("mantikafasi", 287555395151593473L)
+    val Ty = Author("Ty", 487443883127472129L)
 }
 
 /**
