@@ -169,7 +169,7 @@ class StatusSheet(private val logger: Logger) : BottomSheet() {
 
         addView(LinearLayout(ctx).apply {
             setOnClickListener {
-                (WidgetUserSetCustomStatus.Companion).launch(ctx)
+                (WidgetUserSetCustomStatus.Companion)!!.launch(ctx)
                 dismiss()
             }
             val emojiView = SimpleDraweeView(ctx).apply {

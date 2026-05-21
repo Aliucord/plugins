@@ -57,7 +57,7 @@ class UnknownConnectionIcons : Plugin() {
             ConnectedAccountItem::class.java
         ) {
             val connectedAccount = (it.args[1] as ConnectedAccountItem).connectedAccount
-            val account = (Platform.Companion).from(connectedAccount)
+            val account = (Platform.Companion)!!.from(connectedAccount)
             if (account != Platform.NONE) return@before
 
             val guh = this.itemView as AppCompatTextView
