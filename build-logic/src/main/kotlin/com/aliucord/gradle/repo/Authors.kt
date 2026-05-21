@@ -55,6 +55,7 @@ object Authors {
     val Link = Author("Link", 725923756555501658L)
     val Wing = Author("Wing", 298295889720770563L)
     val ArjixWasTaken = Author("ArjixWasTaken", 674710789138939916L)
+    val PikachuGabe = Author("pikachugabe", 701095070870274139L)
 }
 
 /**
