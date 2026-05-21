@@ -38,8 +38,14 @@ object Authors {
     val oSumAtrIX = Author("oSumAtrIX", 737323631117598811L)
     val js6pak = Author("6pak", 141580516380901376L)
     val RazerTexz = Author("RazerTexz", 633565155501801472L)
+    val Xinto = Author("Xinto", 423915768191647755L)
+    val zt = Author("zt", 289556910426816513L)
+    val rushii = Author("rushii", 0L, false)
+    val Nyako = Author("nyakowint", 118437263754395652L)
+    val Juby210 = Author("Juby210", 324622488644616195L)
     val LampDelivery = Author("LampDelivery", 650805815623680030L)
     val Ty = Author("Ty", 487443883127472129L)
+    val miaaaa0a = Author("miaaaa0a", 435750383491481602L)
 }
 
 /**
