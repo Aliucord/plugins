@@ -180,7 +180,7 @@ class Translate : Plugin() {
         })
     }
 
-    override fun stop(context: Context?) = patcher.unpatchAll()
+    override fun stop(context: Context) = patcher.unpatchAll()
 
     private fun translateMessage(text: String, from: String? = null, to: String? = null): TranslateData {
         val toLang = to ?: settings.getString("defaultLanguage", "en")
