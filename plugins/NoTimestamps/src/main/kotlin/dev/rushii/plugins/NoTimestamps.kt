@@ -16,7 +16,7 @@ import com.discord.widgets.chat.list.entries.ChatListEntry
 class NoTimestamps : Plugin() {
     private val timestampId = Utils.getResId("chat_list_adapter_item_text_timestamp", "id")
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         if (PluginManager.isPluginEnabled("CustomTimestamps")) {
             Utils.showToast("NoTimestamps: Disabled CustomTimestamps")
             PluginManager.disablePlugin("CustomTimestamps")

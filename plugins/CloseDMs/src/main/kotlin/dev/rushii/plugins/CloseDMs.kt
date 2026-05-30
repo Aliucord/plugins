@@ -22,7 +22,7 @@ class CloseDMs : Plugin() {
     private val muteItemId = Utils.getResId("text_action_mute", "id")
     private val deleteIconId = Utils.getResId("drawable_chip_delete", "drawable")
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<WidgetChannelsListItemChannelActions>(
             "configureUI",
             WidgetChannelsListItemChannelActions.Model::class.java,
@@ -37,7 +37,7 @@ class CloseDMs : Plugin() {
                 setOnClickListener {
                     dismiss()
                     Utils.threadPool.execute {
-                        val (_, err) = (RestAPI.Companion).api.deleteChannel(model.channel.id).await()
+                        val (_, err) = RestAPI.Companion!!.api.deleteChannel(model.channel.id).await()
                         if (err != null) logger.errorToast("Failed to close DM!", err)
                     }
                 }

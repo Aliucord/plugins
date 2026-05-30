@@ -24,7 +24,7 @@ class ASS : Plugin() {
         settingsTab = SettingsTab(ASSSettings::class.java).withArgs(settings)
     }
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         val currentStyle = settings.getString("currentStyle", "")
         if (currentStyle.isEmpty()) return
 
@@ -42,7 +42,7 @@ class ASS : Plugin() {
         })
     }
 
-    override fun stop(ctx: Context) = patcher.unpatchAll()
+    override fun stop(context: Context) = patcher.unpatchAll()
 
     private fun traverse(view: View, rules: SparseArray<Rule>) {
         stack.addFirst(view)

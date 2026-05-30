@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import com.aliucord.CollectionUtils
 import com.aliucord.Http
 import com.aliucord.Utils
 import com.aliucord.annotations.AliucordPlugin
@@ -42,8 +41,8 @@ class Translate : Plugin() {
         settingsTab = SettingsTab(PluginSettings::class.java).withArgs(settings)
     }
 
-    override fun load(ctx: Context) {
-        pluginIcon = ContextCompat.getDrawable(ctx, R.e.ic_locale_24dp)!!
+    override fun load(context: Context) {
+        pluginIcon = ContextCompat.getDrawable(context, R.e.ic_locale_24dp)!!
     }
 
     override fun start(context: Context) {

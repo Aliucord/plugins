@@ -32,7 +32,7 @@ class CloneChannels : Plugin() {
     private val settingsItemId = Utils.getResId("action_channel_settings", "id")
     private val cloneIconId = Utils.getResId("ic_content_copy_white_a60_24dp", "drawable")
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<WidgetChannelsListItemChannelActions>(
             "configureUI",
             WidgetChannelsListItemChannelActions.Model::class.java,

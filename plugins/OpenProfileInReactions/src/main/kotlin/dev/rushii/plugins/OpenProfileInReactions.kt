@@ -14,7 +14,7 @@ import com.discord.widgets.user.usersheet.WidgetUserSheet
 @Suppress("unused")
 @AliucordPlugin
 class OpenProfileInReactions : Plugin() {
-	override fun start(ctx: Context) {
+	override fun start(context: Context) {
 		patcher.patch(
 			ReactionUserViewHolder::class.java.getDeclaredMethod(
 				"onConfigure",

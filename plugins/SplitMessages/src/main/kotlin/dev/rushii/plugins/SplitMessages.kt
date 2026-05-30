@@ -50,7 +50,7 @@ class SplitMessages : Plugin() {
 
     var maxSplits: Int by settings.delegate(DEFAULT_SPLITS)
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.before<ChatInputViewModel>(
             "sendMessage",
             Context::class.java,

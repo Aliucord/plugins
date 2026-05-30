@@ -11,7 +11,6 @@ import android.net.Uri
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
-import com.aliucord.Logger
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -21,10 +20,9 @@ class ReverseImageSearch : Plugin() {
 
     init {
         settingsTab = SettingsTab(SearchSettings::class.java).withArgs(settings)
-        needsResources = true
     }
 
-    override fun load(ctx: Context) {
+    override fun load(context: Context) {
         val res = resources!!
 
         pluginIcon = ResourcesCompat.getDrawable(

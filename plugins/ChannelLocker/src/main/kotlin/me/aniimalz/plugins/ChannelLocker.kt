@@ -43,7 +43,7 @@ class ChannelLocker : Plugin() {
 
 
     @SuppressLint("SetTextI18n")
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         val icon = Utils.tintToTheme(
             ContextCompat.getDrawable(
                 Utils.appContext,
@@ -193,7 +193,7 @@ class ChannelLocker : Plugin() {
             })
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
         commands.unregisterAll()
     }

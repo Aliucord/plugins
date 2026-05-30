@@ -10,14 +10,14 @@ import com.discord.widgets.user.WidgetUserStatusSheet
 
 @AliucordPlugin
 class StatusSheetPlus : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<WidgetUserStatusSheet>("onViewCreated", View::class.java, Bundle::class.java) {
             dismiss()
             StatusSheet(logger).show(this.parentFragmentManager, "Status Sheet")
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
         commands.unregisterAll()
     }

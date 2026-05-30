@@ -18,7 +18,7 @@ import com.discord.widgets.home.*
 class NoPingWidthLimit : Plugin() {
 	private val channelMentionsId = Utils.getResId("channels_item_channel_mentions", "id")
 
-	override fun start(ctx: Context) {
+	override fun start(context: Context) {
 		patcher.after<WidgetHomeHeaderManager>(
 			"configure",
 			WidgetHome::class.java,

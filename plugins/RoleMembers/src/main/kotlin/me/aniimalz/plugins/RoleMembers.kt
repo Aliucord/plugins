@@ -16,7 +16,7 @@ class RoleMembers : Plugin() {
 
     var pluginIcon: Drawable? = null
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         pluginIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_role_24dp)
         val roleOption = Utils.createCommandOption(
             ApplicationCommandType.ROLE, "role", "The role to list members from", null,
@@ -33,7 +33,7 @@ class RoleMembers : Plugin() {
         Utils.openPageWithProxy(context, RoleMembersPage(role, guildId))
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         rmSub?.unsubscribe()
         patcher.unpatchAll()
         commands.unregisterAll()

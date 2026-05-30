@@ -16,7 +16,7 @@ import com.discord.utilities.rest.RestAPI
 @Suppress("unused")
 @AliucordPlugin
 class SlashNick : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         commands.registerCommand(
             "nick",
             "Change your nickname on this server.",

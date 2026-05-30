@@ -11,7 +11,6 @@ import com.discord.utilities.color.ColorCompat
 import com.discord.utilities.spans.ClickableSpan
 import com.discord.utilities.textprocessing.node.*
 import com.discord.widgets.chat.list.WidgetChatList
-import com.discord.widgets.chat.list.adapter.*
 import com.lytefast.flexinput.R
 
 @Suppress("unused")
@@ -36,7 +35,7 @@ class ClickableMentions : Plugin() {
 		}
 	}
 
-	override fun start(ignored: Context) {
+	override fun start(context: Context) {
 		patcher.after<UserMentionNode<UserMentionNode.RenderContext>>(
 			"renderUserMention",
 			SpannableStringBuilder::class.java,

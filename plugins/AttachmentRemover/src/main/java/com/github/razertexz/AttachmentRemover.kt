@@ -23,12 +23,12 @@ import java.util.Collections
 
 @AliucordPlugin(requiresRestart = false)
 class AttachmentRemover : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         var selectedAttachment: MessageAttachment? = null
         val storeUser = StoreStream.getUsers()
 
         val viewId = View.generateViewId()
-        val icon = ctx.getDrawable(R.e.ic_attachment_white_24dp)!!.mutate()
+        val icon = context.getDrawable(R.e.ic_attachment_white_24dp)!!.mutate()
         Utils.tintToTheme(icon)
 
         patcher.after<`WidgetChatListAdapterItemAttachment$configureUI$3`>("invoke", View::class.java) {
@@ -62,5 +62,5 @@ class AttachmentRemover : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) = patcher.unpatchAll()
+    override fun stop(context: Context) = patcher.unpatchAll()
 }

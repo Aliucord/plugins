@@ -51,7 +51,7 @@ class ValidUser : Plugin() {
     private val lockedUsers = HashMap<Long, ArrayList<Long>>()
     private val invalidUsers = HashSet<Long>()
 
-    override fun start(c: Context) {
+    override fun start(context: Context) {
         var chatList: WidgetChatList? = null
 
         patcher.patch(

@@ -21,7 +21,7 @@ class FriendsExporter : Plugin() {
     private val downloadDir = File(Constants.BASE_PATH, "/friends/")
     private var friendsList: String? = null
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         commands.registerCommand("friendsexport", "Export your friends list") {
             val friends = StoreStream.getUserRelationships().relationships
                 .filterValues { it == ModelUserRelationship.TYPE_FRIEND }.keys

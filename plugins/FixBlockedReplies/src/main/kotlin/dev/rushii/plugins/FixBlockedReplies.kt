@@ -49,7 +49,7 @@ class FixBlockedReplies : Plugin() {
         ).withArgs(settings)
     }
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.before<MessageEntry.ReplyData>(
             StoreMessageReplies.MessageState::class.java,
             MessageEntry::class.java,

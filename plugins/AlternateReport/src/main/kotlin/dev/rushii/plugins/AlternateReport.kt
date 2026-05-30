@@ -17,7 +17,7 @@ private const val REPORT_FORM_URL = "https://support.discord.com/hc/en-us/reques
 class AlternateReport : Plugin() {
     private val reportBtnId = Utils.getResId("dialog_chat_actions_report", "id")
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<WidgetChatListActions>(
             "configureUI",
             WidgetChatListActions.Model::class.java,

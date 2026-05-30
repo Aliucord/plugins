@@ -22,7 +22,7 @@ class NoUppercase : Plugin() {
     //		).withArgs(settings)
     //	}
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         //		val headerIds = listOf(
         //			R.i.AppAlertDialogHeader,
         //			R.i.Feedback_SectionHeaderTextAppearance,

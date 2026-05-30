@@ -21,7 +21,7 @@ class xkcd : Plugin() {
 
     var pluginIcon: Drawable? = null
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         pluginIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_search)
         val url = "https://xkcd.com"
         val comicNum = Utils.createCommandOption(
@@ -83,7 +83,7 @@ class xkcd : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         commands.unregisterAll()
     }
 }

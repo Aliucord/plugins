@@ -28,7 +28,7 @@ class ReactionNotifier : Plugin() {
 
     var pluginIcon: Drawable? = null
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         pluginIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_reaction_24dp)
         patcher.after<StoreMessageReactions>("handleReactionAdd", MessageReactionUpdate::class.java) {
             if (!settings.getBool("notifyAdd", true)) return@after
@@ -66,7 +66,7 @@ class ReactionNotifier : Plugin() {
         else if (settings.getBool("notifyRemove", false) && removed) NotificationsAPI.display(notif)
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
     }
 }

@@ -32,7 +32,7 @@ class StartupChannel : Plugin() {
 
     var pluginIcon: Drawable? = null
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         pluginIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_channel_text)
         if (!settings.getBool("enabled", true)) return
         val icon = Utils.tintToTheme(ContextCompat.getDrawable(Utils.appContext, R.e.ic_star_24dp))
@@ -88,7 +88,7 @@ class StartupChannel : Plugin() {
             })
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
     }
 }

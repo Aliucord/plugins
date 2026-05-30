@@ -13,7 +13,7 @@ import com.discord.widgets.chat.list.entries.AttachmentEntry
 
 @AliucordPlugin
 class AutoShowSpoilers : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<MessagePreprocessor>("processNode", Node::class.java) {
             val node = it.args[0]
             if (node !is SpoilerNode<*>) return@after
@@ -29,7 +29,7 @@ class AutoShowSpoilers : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
     }
 }

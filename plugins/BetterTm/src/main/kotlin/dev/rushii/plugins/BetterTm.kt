@@ -42,7 +42,7 @@ class BetterTm : Plugin() {
         ).withArgs(settings)
     }
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.patch(
             MGImages::class.java.getMethod(
                 "getImageRequest",

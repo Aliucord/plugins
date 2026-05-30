@@ -31,7 +31,7 @@ class MoarConfirm : Plugin() {
     private var appComponent: AppComponent? = null
     private var callFragManager: FragmentManager? = null
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patchCallButtons()
         patchUserSheet()
         patchRoleContext()
@@ -194,7 +194,7 @@ class MoarConfirm : Plugin() {
         )
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
         commands.unregisterAll()
     }

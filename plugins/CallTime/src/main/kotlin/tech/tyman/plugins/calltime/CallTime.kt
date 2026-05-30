@@ -37,7 +37,7 @@ class CallTime : Plugin() {
             )
         }
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.patchConnectedText()
     }
 

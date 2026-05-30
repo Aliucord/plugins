@@ -18,7 +18,7 @@ class FirstMessage : Plugin() {
     private val cmdGuildOnly
         get() = CommandResult("This combination of arguments cannot be used in dms!", null, false)
 
-    override fun start(startCtx: Context) {
+    override fun start(context: Context) {
         val options = listOf(
             Utils.createCommandOption(
                 ApplicationCommandType.USER,

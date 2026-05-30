@@ -81,7 +81,7 @@ class StreamerMode : Plugin() {
     private val hidePersonalDetails: Boolean by settings.delegate(true)
     private val showWarning: Boolean by settings.delegate(true)
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         // dm sidebar AKAs
         patcher.after<WidgetChannelTopic>("configureUI", WidgetChannelTopicViewModel.ViewState::class.java) {
             if (!hideAKAs) return@after

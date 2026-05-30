@@ -12,7 +12,7 @@ import com.discord.stores.BuiltInCommands
 class NoBuiltInCommands : Plugin() {
     private val blockedCommands = listOf("shrug", "tableflip", "unflip", "me", "spoiler")
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<BuiltInCommands>("getBuiltInCommands") {
             val result = (it.result as List<ApplicationCommand>)
             it.result = result.filter { cmd -> !blockedCommands.contains(cmd.name) }

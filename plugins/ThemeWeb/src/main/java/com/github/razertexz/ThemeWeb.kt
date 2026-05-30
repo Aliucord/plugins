@@ -19,7 +19,7 @@ import de.robv.android.xposed.XC_MethodHook
 
 @AliucordPlugin(requiresRestart = false)
 class ThemeWeb : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.patch(WidgetSettings::class.java, "onViewBound", arrayOf(View::class.java), object : XC_MethodHook(9999) {
             override fun afterHookedMethod(param: XC_MethodHook.MethodHookParam) {
                 val layout = ((param.args[0] as ViewGroup).getChildAt(1) as ViewGroup).getChildAt(0) as ViewGroup
@@ -46,5 +46,5 @@ class ThemeWeb : Plugin() {
         })
     }
 
-    override fun stop(ctx: Context) = patcher.unpatchAll()
+    override fun stop(context: Context) = patcher.unpatchAll()
 }

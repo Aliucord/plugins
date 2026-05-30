@@ -3,8 +3,6 @@ package me.aniimalz.plugins
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.view.View
-import com.aliucord.Main
 import com.aliucord.Utils
 import com.aliucord.annotations.AliucordPlugin
 import com.aliucord.entities.Plugin
@@ -12,21 +10,15 @@ import com.aliucord.patcher.after
 import com.aliucord.utils.RxUtils.onBackpressureBuffer
 import com.aliucord.utils.RxUtils.subscribe
 import com.discord.api.message.reaction.MessageReactionUpdate
-import com.discord.models.domain.ModelUserSettings
 import com.discord.models.message.Message
 import com.discord.stores.StoreMessageReactions
 import com.discord.stores.StoreStream
-import com.discord.widgets.settings.WidgetSettingsAppearance
-import com.discord.widgets.settings.`WidgetSettingsAppearance$updateTheme$1`
 import rx.Subscription
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
-import kotlin.system.exitProcess
 
 @AliucordPlugin
 class Moyai : Plugin() {
     private var observable: Subscription? = null
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<StoreMessageReactions>(
             "handleReactionAdd",
             MessageReactionUpdate::class.java
@@ -66,7 +58,7 @@ class Moyai : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
         observable?.unsubscribe()
     }

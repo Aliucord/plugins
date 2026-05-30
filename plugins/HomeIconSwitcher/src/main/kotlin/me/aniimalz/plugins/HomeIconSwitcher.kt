@@ -36,7 +36,7 @@ class HomeIconSwitcher : Plugin() {
 
     var pluginIcon: Drawable? = null
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         val viewId = View.generateViewId()
         pluginIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_tab_home)
         patcher.after<GuildListViewHolder.FriendsViewHolder>(
@@ -57,7 +57,7 @@ class HomeIconSwitcher : Plugin() {
                     val field = homeIcon?.let { R.e::class.java.getField(homeIcon) }
                     val icon = homeIcon?.let {
                         field?.let { it1 ->
-                            ContextCompat.getDrawable(ctx, it1.getInt(field))?.apply {
+                            ContextCompat.getDrawable(context, it1.getInt(field))?.apply {
                                 mutate()
                                 Utils.tintToTheme(this)
                             }
@@ -78,7 +78,7 @@ class HomeIconSwitcher : Plugin() {
                     }
                 }
                 if (layout.findViewById<ImageView>(viewId) != null) return@after
-                SimpleDraweeView(ctx).apply {
+                SimpleDraweeView(context).apply {
                     id = viewId
                     imageTintList = null
                     clipToOutline = true
@@ -105,7 +105,7 @@ class HomeIconSwitcher : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
         commands.unregisterAll()
     }

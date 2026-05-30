@@ -41,7 +41,7 @@ class ReactionQueue : Plugin() {
         }
     }
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         val longPrimitiveType = Long::class.javaPrimitiveType!!
         val stringType = String::class.java
 

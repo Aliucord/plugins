@@ -39,7 +39,7 @@ class NormalizeNames : Plugin() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         normalizer = if (normalizeDiacritics) {
             Normalizer2.getNFDInstance()!!
         } else {

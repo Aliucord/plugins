@@ -56,7 +56,7 @@ class Quoter : Plugin() {
 
 
     @SuppressLint("SetTextI18n")
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         quoteIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_quote_white_a60_24dp)
         val quoteId = View.generateViewId()
 
@@ -206,7 +206,7 @@ class Quoter : Plugin() {
         inputBox.append(quoteText)
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
     }
 

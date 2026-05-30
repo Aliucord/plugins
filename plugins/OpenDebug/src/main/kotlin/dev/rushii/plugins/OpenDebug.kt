@@ -19,10 +19,6 @@ import com.lytefast.flexinput.fragment.`FlexInputFragment$d`
 class OpenDebug : Plugin() {
     private val pkgName = this.javaClass.`package`?.name
 
-    init {
-        needsResources = true
-    }
-
     private fun openDebug(ctx: Context) =
         Utils.openPage(
             ctx,
@@ -30,10 +26,10 @@ class OpenDebug : Plugin() {
             Intent().addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
         )
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         var debugIcon = (ResourcesCompat.getDrawable(
-            resources,
-            resources.getIdentifier("debug_icon", "drawable", pkgName),
+            resources!!,
+            resources!!.getIdentifier("debug_icon", "drawable", pkgName),
             null,
         ) ?: throw Error("Failed to load debug icon")) as BitmapDrawable
         debugIcon = BitmapDrawable(
@@ -42,8 +38,8 @@ class OpenDebug : Plugin() {
         )
 
         val disableIcon = ResourcesCompat.getDrawable(
-            resources,
-            resources.getIdentifier("disable_icon", "drawable", pkgName),
+            resources!!,
+            resources!!.getIdentifier("disable_icon", "drawable", pkgName),
             null,
         ) ?: throw Error("Failed to load disable icon")
 
@@ -72,7 +68,7 @@ class OpenDebug : Plugin() {
         }
 
         if (!settings.getBool("disabled", false))
-            openDebug(ctx)
+            openDebug(context)
     }
 
     override fun stop(context: Context) {

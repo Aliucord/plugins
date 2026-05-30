@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentManager
-import b.a.a.i
 import com.aliucord.Utils
 import com.aliucord.annotations.AliucordPlugin
 import com.aliucord.entities.Plugin
@@ -24,18 +22,11 @@ import com.discord.widgets.user.profile.UserProfileConnectionsView.ConnectedAcco
 import com.discord.widgets.user.usersheet.WidgetUserSheet
 import com.discord.widgets.user.usersheet.WidgetUserSheetViewModel
 import com.lytefast.flexinput.R
-import com.lytefast.flexinput.R.h.account
-import com.lytefast.flexinput.R.h.connect
-import java.util.Locale
 
 @AliucordPlugin
 class UnknownConnectionIcons : Plugin() {
-    init {
-        needsResources = true
-    }
-
     @SuppressLint("SetTextI18n")
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
 
         lateinit var userSheetBinding: WidgetUserSheetBinding
         lateinit var fragment: FragmentManager
@@ -62,7 +53,7 @@ class UnknownConnectionIcons : Plugin() {
 
             val guh = this.itemView as AppCompatTextView
 
-            val icon = determineTheme(ctx, connectedAccount)
+            val icon = determineTheme(context, connectedAccount)
             guh.text = connectedAccount.d() // name
             guh.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null)
 
@@ -127,7 +118,7 @@ class UnknownConnectionIcons : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
     }
 }

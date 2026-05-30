@@ -41,7 +41,7 @@ class Counters : Plugin() {
         ).withArgs(settings)
     }
 
-    override fun start(ignored: Context) {
+    override fun start(context: Context) {
         patcher.before<WidgetGuildListAdapter>(
             "onCreateViewHolder",
             ViewGroup::class.java,
@@ -93,10 +93,9 @@ class Counters : Plugin() {
                         }
                     }
                 StoreStream.getPresences().observeAllPresences().subscribe {
-                    val presences = StoreStream.getPresences().presences
                     val online = StoreStream.getUserRelationships().relationships
                         .filter { r -> r.value == ModelUserRelationship.TYPE_FRIEND }.keys
-                        .mapNotNull { id -> presences[id] as Presence? }
+                        .mapNotNull { id -> this[id] }
                         .filter { p -> p.status != ClientStatus.OFFLINE && p.status != ClientStatus.INVISIBLE }
                     Utils.mainThread.post {
                         onlineCounter.text = "Online - ${online.size}"

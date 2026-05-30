@@ -10,7 +10,7 @@ import com.discord.models.member.GuildMember
 @Suppress("unused")
 @AliucordPlugin(requiresRestart = true)
 class NoNitroAvatars : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.before<GuildMember>(
             Int::class.javaPrimitiveType!!,
             Long::class.javaPrimitiveType!!,

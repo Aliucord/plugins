@@ -19,7 +19,7 @@ class PinIcon : Plugin() {
     private var pinIcon: Drawable? = null
 
     @SuppressLint("SetTextI18n")
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         pinIcon = ContextCompat.getDrawable(Utils.appContext, R.e.ic_sidebar_pins_off_light_24dp)
 
         val itemTimestampField = WidgetChatListAdapterItemMessage::class.java.getDeclaredField(
@@ -63,7 +63,7 @@ class PinIcon : Plugin() {
         }
     }
 
-    override fun stop(ctx: Context) {
+    override fun stop(context: Context) {
         patcher.unpatchAll()
     }
 }

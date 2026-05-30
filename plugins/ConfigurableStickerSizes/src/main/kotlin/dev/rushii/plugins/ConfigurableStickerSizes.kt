@@ -38,7 +38,7 @@ class ConfigurableStickerSizes : Plugin() {
 
     private var stickerSize: Int by settings.delegate(DEFAULT_STICKER_SIZE)
 
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<WidgetChatListAdapterItemSticker>(
             "onConfigure",
             Integer.TYPE,

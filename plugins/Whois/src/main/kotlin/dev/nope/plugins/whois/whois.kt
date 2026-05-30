@@ -58,7 +58,7 @@ class UserLookup : Plugin() {
         UserFlags.PREMIUM_EARLY_SUPPORTER to "<:supporter:585763690868113455>",
     )
 
-    override fun start(_ctx: Context) {
+    override fun start(context: Context) {
         val mentionOrId = arrayListOf(
             Utils.createCommandOption(
                 ApplicationCommandType.SUBCOMMAND, "user-id", "Look up a user by ID", subCommandOptions = arrayListOf(

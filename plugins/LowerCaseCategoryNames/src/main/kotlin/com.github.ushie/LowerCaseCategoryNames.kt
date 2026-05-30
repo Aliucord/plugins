@@ -12,7 +12,7 @@ import com.discord.widgets.channels.list.items.ChannelListItem
 @Suppress("unused")
 @AliucordPlugin
 class LowerCaseCategoryNames : Plugin() {
-    override fun start(ctx: Context) {
+    override fun start(context: Context) {
         patcher.after<WidgetChannelsListAdapter.ItemChannelCategory>(
             "onConfigure",
             Int::class.java,
