@@ -5,7 +5,7 @@ plugins {
     id("com.aliucord.plugins-repo")
 }
 
-version = "1.2.2"
+version = "1.3.0"
 description = "Replaces the TM, R, and C emojis with ones that are more visible."
 
 aliucord {
@@ -13,6 +13,10 @@ aliucord {
 
     changelog.set(
         """
+            # 1.3.0
+            * Restructure internals
+            * Bundle all icons together with plugin
+
 			# 1.2.2
 			* Fix target resource IDs
 

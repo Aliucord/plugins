@@ -1,94 +1,118 @@
 package dev.rushii.plugins
 
 import android.content.Context
-import android.os.Bundle
-import android.view.View
-import com.aliucord.Utils
+import androidx.annotation.DrawableRes
 import com.aliucord.annotations.AliucordPlugin
 import com.aliucord.api.SettingsAPI
 import com.aliucord.entities.Plugin
-import com.aliucord.patcher.PreHook
-import com.aliucord.widgets.BottomSheet
+import com.aliucord.patcher.*
+import com.aliucord.plugins.R
+import com.aliucord.settings.delegate
 import com.discord.utilities.images.MGImages
-import com.discord.views.CheckedSetting
+import com.facebook.imagepipeline.request.ImageRequest
+import b.f.j.p.i0 as LocalResourceFetchProducer
 
-// FIXME: use resources rather than remote url
-const val BASE_URL = "https://raw.githubusercontent.com/rushiiMachine/aliucord-plugins/master/BetterTm/"
+const val RES_URI = "res:///"
+const val TRADEMARK_EMOJI_RSC_ID = "2131823865"
+const val REGISTERED_TRADEMARK_EMOJI_RSC_ID = "2131824088"
+const val COPYRIGHT_EMOJI_RSC_ID = "2131824087"
 
-const val TM_EMOJI_URI = "res:///2131823865"
-const val TM_URL = BASE_URL + "tm.png"
-const val TM_ORIGINAL_URL = BASE_URL + "tm_original.png"
+const val CUSTOM_WHITE_PREFIX = "0"
+const val CUSTOM_ALT_PREFIX = "00"
 
-const val R_EMOJI_URI = "res:///2131824088"
-const val R_URL = BASE_URL + "r.png"
-const val R_ORIGINAL_URL = BASE_URL + "r_original.png"
-
-const val C_EMOJI_URI = "res:///2131824087"
-const val C_URL = BASE_URL + "c.png"
-const val C_ORIGINAL_URL = BASE_URL + "c_original.png"
-
-const val USE_ORIGINAL_KEY = "useOriginal"
+/**
+ * `res:///` image urls as parsed in [ImageRequest]
+ */
+const val FRESCO_RES_TYPE = 6
 
 @Suppress("unused")
-@AliucordPlugin(requiresRestart = true)
+@AliucordPlugin
 class BetterTm : Plugin() {
-    private infix fun String.orOriginal(originalUrl: String) =
-        if (settings.getBool(USE_ORIGINAL_KEY, false)) originalUrl else this
+    var SettingsAPI.useAlt by settings.delegate(true)
 
     init {
         settingsTab = SettingsTab(
             BetterTmSettings::class.java,
             SettingsTab.Type.BOTTOM_SHEET,
-        ).withArgs(settings)
+        ).withArgs(this)
     }
 
     override fun start(context: Context) {
-        patcher.patch(
-            MGImages::class.java.getMethod(
-                "getImageRequest",
-                String::class.java,
-                Integer.TYPE,
-                Integer.TYPE,
-                java.lang.Boolean.TYPE,
-            ),
-            PreHook {
-                // logger.info(it.args[0] as String)
+        patcher.before<LocalResourceFetchProducer>(
+            "d",
+            ImageRequest::class.java,
+        ) { (frame, request: ImageRequest) ->
+            if (request.d != FRESCO_RES_TYPE) return@before
 
-                it.args[0] = when (it.args[0]) {
-                    TM_EMOJI_URI -> TM_URL orOriginal TM_ORIGINAL_URL
-                    R_EMOJI_URI -> R_URL orOriginal R_ORIGINAL_URL
-                    C_EMOJI_URI -> C_URL orOriginal C_ORIGINAL_URL
-                    else -> return@PreHook
-                }
+            val newResourceId = when (request.c.toString()) {
+                "${RES_URI}${CUSTOM_WHITE_PREFIX}${TRADEMARK_EMOJI_RSC_ID}" ->
+                    R.drawable.ic_trademark_white
 
-                it.args[1] = 100
-                it.args[2] = 100
-            },
-        )
+                "${RES_URI}${CUSTOM_ALT_PREFIX}${TRADEMARK_EMOJI_RSC_ID}" ->
+                    R.drawable.ic_trademark_alt
+
+                "${RES_URI}${CUSTOM_WHITE_PREFIX}${REGISTERED_TRADEMARK_EMOJI_RSC_ID}" ->
+                    R.drawable.ic_registered_trademark_white
+
+                "${RES_URI}${CUSTOM_ALT_PREFIX}${REGISTERED_TRADEMARK_EMOJI_RSC_ID}" ->
+                    R.drawable.ic_registered_trademark_alt
+
+                "${RES_URI}${CUSTOM_WHITE_PREFIX}${COPYRIGHT_EMOJI_RSC_ID}" ->
+                    R.drawable.ic_copyright_white
+
+                "${RES_URI}${CUSTOM_ALT_PREFIX}${COPYRIGHT_EMOJI_RSC_ID}" ->
+                    R.drawable.ic_copyright_alt
+
+                else -> return@before
+            }
+
+            val size = resources!!.openRawResourceFd(newResourceId).use { it.length }
+            val stream = resources!!.openRawResource(newResourceId)
+
+            frame.result = this.c(stream, size.toInt())
+        }
+
+        // Rewrite target uri since resources are cached by fresco for some reason
+        patcher.before<MGImages?>(
+            "getImageRequest",
+            String::class.java,
+            Int::class.javaPrimitiveType!!,
+            Int::class.javaPrimitiveType!!,
+            Boolean::class.javaPrimitiveType!!,
+        ) {
+            it.args[0] = when (it.args[0]) {
+                "${RES_URI}${TRADEMARK_EMOJI_RSC_ID}" ->
+                    "${RES_URI}${customUriPrefix()}${TRADEMARK_EMOJI_RSC_ID}"
+
+                "${RES_URI}${REGISTERED_TRADEMARK_EMOJI_RSC_ID}" ->
+                    "${RES_URI}${customUriPrefix()}${REGISTERED_TRADEMARK_EMOJI_RSC_ID}"
+
+                "${RES_URI}${COPYRIGHT_EMOJI_RSC_ID}" ->
+                    "${RES_URI}${customUriPrefix()}${COPYRIGHT_EMOJI_RSC_ID}"
+
+                else -> return@before
+            }
+        }
     }
 
     override fun stop(context: Context) {
         patcher.unpatchAll()
     }
-}
 
-class BetterTmSettings(private val settings: SettingsAPI) : BottomSheet() {
-    override fun onViewCreated(view: View, bundle: Bundle?) {
-        super.onViewCreated(view, bundle)
-        val ctx = view.context
+    private fun customUriPrefix() = when (settings.useAlt) {
+        true -> CUSTOM_ALT_PREFIX
+        false -> CUSTOM_WHITE_PREFIX
+    }
 
-        addView(
-            Utils.createCheckedSetting(
-                ctx, CheckedSetting.ViewType.SWITCH,
-                "Originals",
-                "Use original emojis made white instead of replacements.",
-            ).apply {
-                isChecked = settings.getBool(USE_ORIGINAL_KEY, false)
-                setOnCheckedListener {
-                    settings.setBool(USE_ORIGINAL_KEY, it)
-                    Utils.promptRestart()
-                }
-            },
-        )
+    @DrawableRes
+    private fun switchAlt(
+        @DrawableRes whiteId: Int,
+        @DrawableRes altId: Int,
+    ): Int {
+        return if (settings.useAlt) {
+            altId
+        } else {
+            whiteId
+        }
     }
 }
