@@ -1,4 +1,4 @@
-package com.aluicord.plugins;
+package com.aliucord.plugins;
 
 import android.content.Context;
 import android.net.Uri;

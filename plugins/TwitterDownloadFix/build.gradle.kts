@@ -11,7 +11,8 @@ description = "Make Twitter embed images download as `jpg` instead of `jpg:large
 aliucord {
     author(Authors.PikachuGabe)
 
-    changelog.set("""
+    changelog.set(
+        """
         # 1.3.1
         Bluesky actually stores the files as @jpeg instead of .jpeg so changing the URL doesn't work, so I can't fix that right now. 
         Will have to figure out how to change the file type after downloading instead of just changing the download URL.
@@ -30,5 +31,6 @@ aliucord {
 
         # 1.0.0
         Plugin release
-    """)
+        """.trimIndent(),
+    )
 }
